@@ -1,0 +1,4 @@
+name=AParadiseKiller
+author=Caffeinated_Moth
+version=0.1
+description=Enables support for Archipelago Multiworld
