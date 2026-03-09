@@ -1,0 +1,3 @@
+FB_MEDITATE = 405
+FB_DASH     = 406
+FB_DJUMP    = 407
