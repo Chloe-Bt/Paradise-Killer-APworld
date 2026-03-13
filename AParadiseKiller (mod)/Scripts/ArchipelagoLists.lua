@@ -1,8 +1,14 @@
 ItemNameToAPId = {
-	[""] = 1,
+	["Starlight"] = 401,
 }
 APItemIdToName = {
-	[1] = "",
+	[401] = "Starlight",
+	[402] = "",
+	[403] = "",
+	[404] = "",
+	[405] = "",
+	[406] = "",
+	[407] = "",
 }
 LocationNameToAPId = {
 	[""] = 1,

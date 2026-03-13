@@ -4,7 +4,7 @@ print("[AParadiseKiller] loaded")
 require "archipelago"
 
 local UEHelpers = require("UEHelpers")
-local DEBUG_KEYBIND = false
+local DEBUG_KEYBIND = true
 
 if DEBUG_KEYBIND then 
     RegisterKeyBind(Key.ONE, { ModifierKey.CONTROL }, function()
@@ -136,7 +136,7 @@ end)
 function Connect(commandName,userInput, Ar) 
     if #userInput < 2 then 
         print("Error trying to connect. Correct input: connect <host> <slot> [password]")
-        Ar:Log("Error trying to connect. Correct input: connect <host> <slot> [password]")  
+        Ar:Log("Error trying to connect. Correct input: connect <host> <slot> [password]")
         return
     end
 
