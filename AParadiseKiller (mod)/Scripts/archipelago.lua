@@ -1,3 +1,7 @@
+---@diagnostic disable: lowercase-global
+---@diagnostic disable: undefined-global
+---@diagnostic disable: undefined-field
+
 local AP = require "lua-apclientpp"
 
 -- global to this mod
@@ -8,6 +12,8 @@ local message_format = AP.RenderFormat.TEXT
 
 ---@type APClient
 local ap = nil
+local checked_locations = {}
+Goal = nil
 
 -- TODO: user input
 local host = "localhost"
@@ -16,6 +22,8 @@ local password = ""
 
 
 function connect(server, slot, password)
+    print("we are calling archipelago.lua connect")
+
     function on_socket_connected()
         print("Socket connected")
     end
@@ -38,12 +46,9 @@ function connect(server, slot, password)
         print(slot_data)
         print("missing locations: " .. table.concat(ap.missing_locations, ", "))
         print("checked locations: " .. table.concat(ap.checked_locations, ", "))
+        ap:ConnectUpdate(nil, {"Lua-APClientPP", "DeathLink"})
         ap:Say("Hello World!")
         ap:Bounce({name="test"}, {game_name})
-        local extra = {nonce = 123}  -- optional extra data will be in the server reply
-        ap:Get({"counter"}, extra)
-        ap:Set("counter", 0, true, {{"add", 1}}, extra)
-        ap:Set("empty_array", nil, true, {{"replace", AP.EMPTY_ARRAY}})
         ap:ConnectUpdate(nil, {"Lua-APClientPP", "DeathLink"})
         print("Players:")
         local players = ap:get_players()
