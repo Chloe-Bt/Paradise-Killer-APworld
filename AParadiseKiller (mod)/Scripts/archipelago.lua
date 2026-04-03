@@ -2,6 +2,8 @@
 ---@diagnostic disable: undefined-global
 ---@diagnostic disable: undefined-field
 
+require "ArchipelagoLists"
+
 local AP = require "lua-apclientpp"
 
 -- global to this mod
@@ -19,11 +21,10 @@ Goal = nil
 local host = "localhost"
 local slot = "Player1"
 local password = ""
-
+local lastIndex = -1
 
 function connect(server, slot, password)
     print("we are calling archipelago.lua connect")
-
     function on_socket_connected()
         print("Socket connected")
     end
@@ -43,21 +44,12 @@ function connect(server, slot, password)
 
     function on_slot_connected(slot_data)
         print("Slot connected")
-        print(slot_data)
-        print("missing locations: " .. table.concat(ap.missing_locations, ", "))
-        print("checked locations: " .. table.concat(ap.checked_locations, ", "))
-        ap:ConnectUpdate(nil, {"Lua-APClientPP", "DeathLink"})
-        ap:Say("Hello World!")
+        print(tostring(slot_data))
+        --print("missing locations: " .. table.concat(ap.missing_locations, ", "))
+        --print("checked locations: " .. table.concat(ap.checked_locations, ", "))
         ap:Bounce({name="test"}, {game_name})
-        ap:ConnectUpdate(nil, {"Lua-APClientPP", "DeathLink"})
-        print("Players:")
-        local players = ap:get_players()
-        for _, player in ipairs(players) do
-            print("  " .. tostring(player.slot) .. ": " .. player.name ..
-                  " playing " .. ap:get_player_game(player.slot))
-        end
+        ap:ConnectUpdate(nil, {"Lua-APClientPP"})
     end
-
 
     function on_slot_refused(reasons)
         print("Slot refused: " .. table.concat(reasons, ", "))
@@ -65,26 +57,42 @@ function connect(server, slot, password)
 
     function on_items_received(items)
         print("Items received:")
+
+        local player    = FindFirstOf("YMKCharacter")
+        local inventory = player.InventoryComponent:Get()
+
+        UnregisterInventory()
         for _, item in ipairs(items) do
-            print(item.item)
+            if item.index > lastIndex then
+                lastIndex = item.index
+                local APitem = tostring(APItemIdToName[item.item])
+                print("Owns: " .. APitem .. " - " .. tostring(inventory:DoesOwnItem(FName(APitem))))
+                
+                if APitem ~= nil then
+                    if not inventory:DoesOwnItem(FName(APitem)) then
+                        inventory:GiveItem(FName(APitem), 1)
+                    end
+                end
+            end
         end
+        RegisterInventory()
     end
 
     function on_location_info(items)
         print("Locations scouted:")
-        for _, item in ipairs(items) do
-            print(item.item)
+    end
+    
+    function on_location_checked(locations)
+        print("calling location checked")
+        print("Locations checked:" .. table.concat(locations, ", "))
+        print("Checked locations: " .. table.concat(ap.checked_locations, ", "))
+        for _, LocationID in ipairs(locations) do
+            checked_locations[LocationID] = true
         end
     end
 
-    function on_location_checked(locations)
-        print("Locations checked:" .. table.concat(locations, ", "))
-        print("Checked locations: " .. table.concat(ap.checked_locations, ", "))
-    end
-
     function on_data_package_changed(data_package)
-        print("Data package changed:")
-        print(data_package)
+        print("Data package changed")
     end
 
     function on_print(msg)
@@ -99,8 +107,7 @@ function connect(server, slot, password)
     end
 
     function on_bounced(bounce)
-        print("Bounced:")
-        print(bounce)
+        print("Bounced")
     end
 
     function on_retrieved(map, keys, extra)
@@ -132,7 +139,7 @@ function connect(server, slot, password)
 
     local uuid = ""
     ap = AP(uuid, game_name, server);
-
+    print("Connecting to " .. server .. " ...")
     ap:set_socket_connected_handler(on_socket_connected)
     ap:set_socket_error_handler(on_socket_error)
     ap:set_socket_disconnected_handler(on_socket_disconnected)
@@ -152,8 +159,11 @@ end
 
 function connectToAp(host, slot, password)
     ExecuteAsync(function ()
-    connect(host, slot, password)
-
+        connect(host, slot, password)
+        RegisterInventory()
+        while ap do
+            ap:poll()
+        end
     end)
 end
 
@@ -163,4 +173,111 @@ function disconnect()
 ---@diagnostic disable-next-line: cast-local-type
     ap = nil
     collectgarbage("collect")
+end
+
+function SendLocation(locationID)
+    if ap == nil then
+        print("AP client not connected, cannot send location")
+        return
+    end
+    print("Sending location ID: " .. locationID)
+
+    local player    = FindFirstOf("YMKCharacter")
+    local inventory = player.InventoryComponent:Get()
+    print(tostring(locationID))
+    inventory:RemoveItem(FName(APLocationIdToName[locationID]), 1)
+    print("ITEM TO REMOVE: " .. tostring(APLocationIdToName[locationID]))
+    ap:LocationChecks({tonumber(locationID)})
+end
+
+function IsLocationChecked(locationID)
+    if checked_locations==nil then
+        return nil
+    end
+    return checked_locations[locationID] ~= nil
+end
+
+function SendLocationFromName(locationName)
+    local locationID = GetAPLocationIDfromName(locationName)
+    if ap == nil then
+        print("AP client not connected, cannot send location")
+        return
+    end
+
+    if locationID == nil then
+        print("Location name:"..locationName.."Is not valid.")
+        return
+    end
+    print("Sending location name: "..locationName)
+
+    ap:LocationChecks({tonumber(locationID)})
+end
+
+
+function GetAPLocationIDfromName(locationName)
+    return LocationNameToAPId[locationName]
+end
+
+function GetAPNamefromLocationID(locationID)
+    return APLocationIdToName[locationID]
+end
+
+function GetAPItemIDfromName(itemName)
+    return ItemNameToAPId[itemName]
+end
+
+function GetItemNamefromAPItemID(itemID)
+    return APItemIdToName[itemID]
+end
+
+function ChestNamefromID(ChestID)
+    return ChestIDToName[ChestID]
+end
+
+function ChestFilenameFromChestID(ChestID)
+    return ChestIDToFilename[ChestID]
+end
+
+function GetAPCheckedLocations()
+    return ap.checked_locations
+end
+
+function GetAPMissingLocations()
+    return ap.missing_locations
+end
+
+function ScoutLocations(ScoutLocations)
+    if #ScoutLocations>0 then
+        ap:LocationScouts(ScoutLocations,0)
+    end
+end
+
+function SendMessage(message)
+    ap:Say(message)
+end
+
+
+
+--[[
+Process Inventory Management
+]]
+
+preID  = 0
+postID = 0
+
+function RegisterInventory()
+    preID, postID = RegisterHook(
+        "Function /Script/ParadiseKiller.ItemMonitorComponent:OnInventoryItemGained",
+            function(Context, affectedActor, itemId)
+                SendLocation(GetAPLocationIDfromName(itemId:get():ToString()))
+            end
+    )
+end
+
+function UnregisterInventory()
+    UnregisterHook(
+        "Function /Script/ParadiseKiller.ItemMonitorComponent:OnInventoryItemGained",
+        preID,
+        postID
+    )
 end
