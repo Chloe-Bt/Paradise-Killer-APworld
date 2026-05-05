@@ -39,7 +39,7 @@ function connect(server, slot, password)
 
     function on_room_info()
         print("Room info")
-        ap:ConnectSlot(slot, password, items_handling, {"Lua-APClientPP", "DeathLink"}, client_version)
+        ap:ConnectSlot(slot, password, items_handling, {"Lua-APClientPP"}, client_version)
     end
 
     function on_slot_connected(slot_data)
@@ -48,9 +48,7 @@ function connect(server, slot, password)
         --print("missing locations: " .. table.concat(ap.missing_locations, ", "))
         --print("checked locations: " .. table.concat(ap.checked_locations, ", "))
         ap:Bounce({name="test"}, {game_name})
-        ap:ConnectUpdate(nil, {"Lua-APClientPP", "DeathLink"})
-        print(tostring(ap:get_slot()))
-        ChangeDialogueName(ap:get_slot())
+        ap:ConnectUpdate(nil, {"Lua-APClientPP"})
     end
 
     function on_slot_refused(reasons)
@@ -62,26 +60,17 @@ function connect(server, slot, password)
 
         local player    = FindFirstOf("YMKCharacter")
         local inventory = player.InventoryComponent:Get()
-        local knowledge = player.KnowledgeComponent:Get()
 
         UnregisterInventory()
         for _, item in ipairs(items) do
             if item.index > lastIndex then
                 lastIndex = item.index
-                
-                local APitem = APItemIdToName[item.item]
-                --print("Owns: " .. APitem .. " - " .. tostring(inventory:DoesOwnItem(FName(APitem))))
+                local APitem = tostring(APItemIdToName[item.item])
+                print("Owns: " .. APitem .. " - " .. tostring(inventory:DoesOwnItem(FName(APitem))))
                 
                 if APitem ~= nil then
-                    print("item test" .. tostring(item.item) .. tostring(knowledgeID[item.item]))
-                    if knowledgeID[item.item] then
-                        if not knowledge:DoesHaveKnowledge(FName(APitem)) then
-                            knowledge:GainKnowledge(FName(APitem))
-                        end
-                    else
-                        if not inventory:DoesOwnItem(FName(APitem)) then
-                            inventory:GiveItem(FName(APitem), 1)
-                        end
+                    if not inventory:DoesOwnItem(FName(APitem)) then
+                        inventory:GiveItem(FName(APitem), 1)
                     end
                 end
             end
@@ -95,8 +84,8 @@ function connect(server, slot, password)
     
     function on_location_checked(locations)
         print("calling location checked")
-        --print("Locations checked:" .. table.concat(locations, ", "))
-        --print("Checked locations: " .. table.concat(ap.checked_locations, ", "))
+        print("Locations checked:" .. table.concat(locations, ", "))
+        print("Checked locations: " .. table.concat(ap.checked_locations, ", "))
         for _, LocationID in ipairs(locations) do
             checked_locations[LocationID] = true
         end
@@ -107,7 +96,7 @@ function connect(server, slot, password)
     end
 
     function on_print(msg)
-        print(tostring(msg))
+        print(msg)
     end
 
     function on_print_json(msg, extra)
@@ -119,21 +108,6 @@ function connect(server, slot, password)
 
     function on_bounced(bounce)
         print("Bounced")
-        if bounce.tags and table.concat(bounce.tags, " "):find("DeathLink") then
-            print("Received DeathLink!")
-
-            local now = os.time()
-
-            -- Prevent infinite death loops
-            if now - lastDeathTime < 5 then
-                print("Ignoring DeathLink (cooldown)")
-                return
-            end
-
-            lastDeathTime = now
-
-            TriggerDeath()
-        end
     end
 
     function on_retrieved(map, keys, extra)
@@ -210,16 +184,7 @@ function SendLocation(locationID)
 
     local player    = FindFirstOf("YMKCharacter")
     local inventory = player.InventoryComponent:Get()
-    local knowledge = player.KnowledgeComponent:Get()
-
-    APitem = APLocationIdToName[locationID] 
-
-    if knowledgeID[locationID] then
-        knowledge:LoseKnowledge(FName(APitem))
-    else
-        inventory:RemoveItem(FName(APitem), 1)
-    end
-
+    print(tostring(locationID))
     inventory:RemoveItem(FName(APLocationIdToName[locationID]), 1)
     print("ITEM TO REMOVE: " .. tostring(APLocationIdToName[locationID]))
     ap:LocationChecks({tonumber(locationID)})
@@ -296,15 +261,9 @@ end
 --[[
 Process Inventory Management
 ]]
+
 preID  = 0
 postID = 0
-
-local knowledgeList = {405, 406, 407}
-knowledgeID = {}
-
-for _, id in ipairs(knowledgeList) do
-    knowledgeID[id] = true
-end
 
 function RegisterInventory()
     preID, postID = RegisterHook(
@@ -321,17 +280,4 @@ function UnregisterInventory()
         preID,
         postID
     )
-end
-
-function ChangeDialogueName(slotname)
-    local char = StaticFindObject("/Game/Assets/Characters/ItemData/PlayerCharacterData.PlayerCharacterData")
-    char.CharacterName = FText(slotname)
-
-    local char = StaticFindObject("/Game/Assets/Characters/ItemData/WhiskyDrinker1CharacterData.WhiskyDrinker1CharacterData")
-    char.CharacterName = FText("Caffeinated Moth")
-end
-
-function TriggerDeath()
-    local player = FindFirstOf("YMKCharacter")
-    player:OnRespawnPressed()
 end
