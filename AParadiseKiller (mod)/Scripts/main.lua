@@ -60,7 +60,7 @@ if DEBUG_KEYBIND then
         for _, actor in pairs(actors) do
             if actor and actor:IsValid() then
                 local class = actor:GetClass()
-                if class and string.find(class:GetFullName(), "Pickup") then
+                if class and string.find(class:GetFullName(), "") then
 
                     local loc = actor:K2_GetActorLocation()
 
@@ -75,27 +75,44 @@ if DEBUG_KEYBIND then
         end
     end)
 
-    RegisterKeyBind(Key.NINE, { ModifierKey.CONTROL }, function()
-        local player = FindFirstOf("YMKCharacter")
-        local inventory = player.InventoryComponent:Get()
-        local item = "Collectable_LDPhoto"
-
-        inventory:GiveItem(FName(item), 1)
-        local owned = inventory:DoesOwnItem(FName(item))
-        print(tostring(owned))
-        
-        inventory:RemoveItem(FName(item), 1)
-        local owned = inventory:DoesOwnItem(FName(item))
-        print(tostring(owned))
-
-        --local knowledge = player.KnowledgeComponent:Get()
-        --local info = "Shinji_SweetCheeks"
-        --knowledge:GainKnowledge(FName(info))
-        --knowledge:LoseKnowledge(FName(info))
-
+    RegisterKeyBind(Key.THREE, { ModifierKey.CONTROL }, function()
+        for _, obj in pairs(FindAllOf("InventoryItemData")) do
+            local name = obj:GetFullName()
+            if string.find(name, "Item") then
+                print(name)
+            end
+        end
     end)
 
+    RegisterKeyBind(Key.EIGHT, { ModifierKey.CONTROL }, function()
+        local item = StaticFindObject("/Game/Assets/Inventory/ItemData/Collectables/Collectable_RottenEgg.Collectable_RottenEgg")
+        
+        item.ItemName = FText("Archipelago Item")
+        print(item.ItemName:ToString())
 
+        item.ItemDescription = FText("This is a test for an Archipelago item!")
+        print(item.ItemDescription:ToString())
+
+        local player = FindFirstOf("YMKCharacter")
+        player:OnRespawnPressed()
+    end)
+
+    RegisterKeyBind(Key.NINE, { ModifierKey.CONTROL }, function()
+        local player = FindFirstOf("YMKCharacter")
+        
+        local inventory = player.InventoryComponent:Get()
+        local item = ""
+        inventory:GiveItem(FName("Starlight"), 1)
+        inventory:GiveItem(FName("SymbolSDCard_SKY"), 1)
+        inventory:GiveItem(FName("SymbolSDCard_Pyramids"), 1)
+        inventory:GiveItem(FName("SymbolSDCard_Worship_FromVending"), 1)
+
+        local knowledge = player.KnowledgeComponent:Get()
+        local info = ""
+        knowledge:GainKnowledge(FName("DoubleJumpKnowledge"))
+        knowledge:GainKnowledge(FName("DashKnowledge"))
+        knowledge:GainKnowledge(FName("MeditationKnowledge"))
+    end)
 
     RegisterKeyBind(Key.THREE, { ModifierKey.CONTROL }, function()
         RegisterHook(
