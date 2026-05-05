@@ -10,7 +10,7 @@ APClient = {}
 
 ---Version string (ma.mi.re) of the apclientpp version used to build this lua-apclientpp.
 ---@type string
-APClient._VERSION = "0.6.6"
+APClient._VERSION = "0.6.4"
 
 
 -- Functions --
