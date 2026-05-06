@@ -1,4 +1,4 @@
 name=AParadiseKiller
 author=Caffeinated_Moth
 version=0.1
-description=Enables support for Archipelago Multiworld
+description=Enables support for Archipelago Multiworld, see https://github.com/Chloe-Bt/Paradise-Killer-APworld/blob/main/AParadiseKiller%20(apworld)/docs/setup_en.md for more setup information.
