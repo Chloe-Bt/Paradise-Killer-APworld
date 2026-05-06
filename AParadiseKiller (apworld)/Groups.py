@@ -1,14 +1,50 @@
 
-from .ItemLists.NebulaSoda import *
-from .ItemLists.Whisky import *
-from .LocationLists.Areas import *
+from .ItemLists.NebulaSodas import *
+from .ItemLists.Whiskys import *
+from .ItemLists.Keys import *
+from .ItemLists.Upgrades import *
 
-item_name_groups ={
-    "Nebula Soda Cans":         list(SODA_ID_TO_NAME.values()),
-    "Whisky Bottles":           list(WHISKY_ID_TO_NAME.values())
+from .LocationLists.AgriFields import *
+from .LocationLists.Beach import *
+from .LocationLists.CitizenApartments import *
+from .LocationLists.CitizenHousing import *
+from .LocationLists.CouncilBuilding import *
+from .LocationLists.CourtHouse import *
+from .LocationLists.Danchi import *
+from .LocationLists.DeadZone import *
+from .LocationLists.DeepFactoryEntrance import *
+from .LocationLists.DesolationCell import *
+from .LocationLists.DoomJazzYacht import *
+from .LocationLists.Gardens import *
+from .LocationLists.IdleLands import *
+from .LocationLists.KHXWorkshop import *
+from .LocationLists.MarshalBarracks import *
+from .LocationLists.MountainGorge import *
+from .LocationLists.OpulentZiggurat import *
+from .LocationLists.Overworld import *
+from .LocationLists.ParadiseGates import *
+from .LocationLists.Pyramid import *
+from .LocationLists.RealityFoldingDrive import *
+from .LocationLists.SecretBunker import *
+from .LocationLists.SecretCorridor import *
+from .LocationLists.SyndicateApartments import *
+from .LocationLists.SyndicateGraveyard import *
+from .LocationLists.SyndicateHQ import *
+from .LocationLists.Tunnel import *
+
+item_name_groups = {
+    "Upgrades":                 list(WHISKY_ID_TO_NAME.values()),
 }
+'''
+    "Nebula Soda Drinks":       list(SODA_ID_TO_NAME.values()),
+    "Whisky Bottles":           list(WHISKY_ID_TO_NAME.values()),
+    "Sphere Keys":              list(WHISKY_ID_TO_NAME.values())
+}'''
+
 location_name_groups = {
     "Idle Lands":               [name for name in IL_ID_TO_NAME.values()],
+}
+'''
     "Agri Fields":              [name for name in AF_ID_TO_NAME.values()],
     "Beach":                    [name for name in B_ID_TO_NAME.values()],
     "Citizen Apartments":       [name for name in CA_ID_TO_NAME.values()],
@@ -36,3 +72,4 @@ location_name_groups = {
     "Syndicate HQ":             [name for name in SHQ_ID_TO_NAME.values()],
     "Tunnel":                   [name for name in T_ID_TO_NAME.values()],
 }
+'''

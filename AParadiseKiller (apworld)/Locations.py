@@ -1,13 +1,43 @@
 from typing import Dict
 
 from BaseClasses import Location, Region
-from . import ParadiseKillerOptions
-from .ItemLists.Upgrades import *
-from .ItemLists.Keys import *
-from .LocationLists.Areas import *
 from ..AutoWorld import World
 from ..generic.Rules import add_rule
 
+from . import ParadiseKillerOptions
+
+from .ItemLists.Upgrades import *
+from .ItemLists.Keys import *
+from .ItemLists.NebulaSodas import *
+from .ItemLists.Whiskys import *
+
+from .LocationLists.AgriFields import *
+from .LocationLists.Beach import *
+from .LocationLists.CitizenApartments import *
+from .LocationLists.CitizenHousing import *
+from .LocationLists.CouncilBuilding import *
+from .LocationLists.CourtHouse import *
+from .LocationLists.Danchi import *
+from .LocationLists.DeadZone import *
+from .LocationLists.DeepFactoryEntrance import *
+from .LocationLists.DesolationCell import *
+from .LocationLists.DoomJazzYacht import *
+from .LocationLists.Gardens import *
+from .LocationLists.IdleLands import *
+from .LocationLists.KHXWorkshop import *
+from .LocationLists.MarshalBarracks import *
+from .LocationLists.MountainGorge import *
+from .LocationLists.OpulentZiggurat import *
+from .LocationLists.Overworld import *
+from .LocationLists.ParadiseGates import *
+from .LocationLists.Pyramid import *
+from .LocationLists.RealityFoldingDrive import *
+from .LocationLists.SecretBunker import *
+from .LocationLists.SecretCorridor import *
+from .LocationLists.SyndicateApartments import *
+from .LocationLists.SyndicateGraveyard import *
+from .LocationLists.SyndicateHQ import *
+from .LocationLists.Tunnel import *
 
 class ParadiseKillerLocation(Location):
     game: str = "Paradise Killer"
@@ -21,7 +51,7 @@ def get_location_dict():
     # Idle Lands
     for IL_ID in ALL_IL:
         result[IL_ID_TO_NAME[IL_ID]] = IL_ID
-    
+    '''
     # Agri Fields
     for AF_ID in ALL_AF:
         result[AF_ID_TO_NAME[AF_ID]] = AF_ID
@@ -125,20 +155,16 @@ def get_location_dict():
     # Tunnel
     for T_ID in ALL_T:
         result[T_ID_TO_NAME[T_ID]] = T_ID
-    
+    '''
     return result
 
-
 def create_locations(world: World, regions: Dict[str, Region], options: ParadiseKillerOptions):
-    create_full_locations(world, regions, options)
-
-def create_full_locations(world, regions: Dict[str, Region], options: ParadiseKillerOptions):
     # Idle Lands
     IL_region = regions["Idle Lands"]
     for IL_ID in ALL_IL:
         loc = ParadiseKillerLocation(world.player, IL_ID_TO_NAME[IL_ID], IL_ID, IL_region)
         IL_region.locations.append(loc)
-    
+    '''
     # Agri Fields
     AF_region = regions["Agri Fields"]
     for AF_ID in ALL_AF:
@@ -294,3 +320,4 @@ def create_full_locations(world, regions: Dict[str, Region], options: ParadiseKi
     for T_ID in ALL_T:
         loc = ParadiseKillerLocation(world.player, T_ID_TO_NAME[T_ID], T_ID, T_region)
         T_region.locations.append(loc)
+    '''

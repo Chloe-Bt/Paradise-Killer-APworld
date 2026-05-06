@@ -1,48 +1,52 @@
 # Abbreviations in dev
-## Locations
-| **Abbreviation** | **Meaning** |
-| ------------ | ------- |
-| S   | Shinji |
-| R   | Relic |
-| KI  | Key Item |
-| SU  | Starlight Upgrade |
-| SK  | Starlight Skin |
-| Q   | Quest |
-| RCT | Radio Control Tower |
-| ND  | Nebula Drink |
-| BC  | Blood Crystal |
-| R   | Recording |
-| RLS | Relationship |
-| WB  | Whisky Bottle |
+## Locations / items
+| **Abbreviation** | **Meaning**         | **item ID code**     |
+| ---------------- | ------------------- | -------------------- |
+| S                | Shinji              |                      |
+| R                | Relic               |                      |
+| KI               | Key Item            |                      |
+| SU               | (Starlight) Upgrade | 4xy                  |
+| SK               | Starlight Skin      |                      |
+| Q                | Quest               |                      |
+| RCT              | Radio Control Tower |                      |
+| ND               | Nebula Drink        | 1xy                  |
+| BC               | Blood Crystal       | 10xy-11-xy           |
+| RC               | Recording           |                      |
+| RLS              | Relationship        |                      |
+| WB               | Whisky Bottle       | 2xy                  |
+| RK               | Region Key          | 3xy                  |
+| IM               | Island Momento      | 5xy                  |
+| C                | Carving             |                      |
+| CR               | Crests              | 6xy                  |
  
 ## Regions
-| **Abbreviation** | **Meaning** |
-| ------------ | ------- |
-| IL  | Idle Lands |
-| AF  | Agri Fields |
-| B   | Beach |
-| CA  | Citizen Apartments |
-| CH  | Citizen Housing |
-| CB  | Council Building |
-| CHC  | Court House |
-| D   | Danchi |
-| DZ  | Dead Zone |
-| DFE | Deep Factory Entrance |
-| DS  | Desolation Cell |
-| DJY | Doom Jazz's Yacht |
-| G   | Gardens |
-| KHX | K. HX's Workshop |
-| MB  | Marshal Barracks |
-| MG  | Mountain Gorge |
-| OZ  | Opulent Ziggurat |
-| O   | Overworld |
-| PG  | Paradise Gates |
-| P   | Pyramid |
-| RFD | Reality Folding Drive |
-| SB  | Secret Bunker |
-| SC  | Secret Corridor |
-| SA  | Syndicate Apartments |
-| SG  | Syndicate Graveyard |
-| SHQ | Syndicate HQ |
-| T   | Tunnel |
+| **Abbreviation** | **Meaning**            | **location ID code** |
+| ---------------- | ---------------------- | -------------------- |
+| IL               | Idle Lands             | 1xy                  |
+| AF               | Agri Fields            | 2xy                  |
+| B                | Beach                  | 3xy                  |
+| CA               | Citizen Apartments     | 4xy                  |
+| CH               | Citizen Housing        | 5xy                  |
+| CB               | Council Building       | 6xy                  |
+| CHC              | Court House            | 7xy                  |
+| D                | Danchi                 | 8xy                  |
+| DZ               | Dead Zone              | 9xy                  |
+| DFE              | Deep Factory Entrance  | 10xy                 |
+| DS               | Desolation Cell        | 11xy                 |
+| DJY              | Doom Jazz's Yacht      | 12xy                 |
+| G                | Gardens                | 13xy                 |
+| KHX              | K. HX's Workshop       | 14xy                 |
+| MB               | Marshal Barracks       | 15xy                 |
+| MG               | Mountain Gorge         | 16xy                 |
+| OZ               | Opulent Ziggurat       | 17xy                 |
+| O                | Overworld              | 18xy                 |
+| PG               | Paradise Gates         | 19xy                 |
+| P                | Pyramid                | 20xy                 |
+| RFD              | Reality Folding Drive  | 21xy                 |
+| SB               | Secret Bunker          | 22xy                 |
+| SC               | Secret Corridor        | 23xy                 |
+| SA               | Syndicate Apartments   | 24xy                 |
+| SG               | Syndicate Graveyard    | 25xy                 |
+| SHQ              | Syndicate HQ           | 26xy                 |
+| T                | Tunnel                 | 27xy                 |
 

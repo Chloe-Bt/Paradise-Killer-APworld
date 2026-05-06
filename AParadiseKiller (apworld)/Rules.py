@@ -1,16 +1,24 @@
 from BaseClasses import MultiWorld, CollectionState
-from .ItemLists.Collectables import *
-from .ItemLists.Costumes import *
-from .ItemLists.Gestures import *
-from .ItemLists.Keys import *
-from .ItemLists.Useables import *
-from .ItemLists.Weapons import *
-from .ItemLists.Materials import *
-from .LocationLists.Chapters import *
-from ..generic.Rules import add_rule
+
 from . import Items, ParadiseKillerOptions
+from ..generic.Rules import add_rule
+
+def set_rules(multiworld: MultiWorld, world, player: int, options: ParadiseKillerOptions):
+    set_goal(multiworld, world, player, options)
 
 
-
-def set_rules(multiworld: MultiWorld, world, player: int, options: LiesOfPOptions):
-    pass
+def set_goal(multiworld: MultiWorld, world, player: int, options: ParadiseKillerOptions):
+    multiworld.completion_condition[player] = lambda state: (
+        state.has("Starlight Upgrade: Pyramids", player)
+    )
+    '''
+    match options.goal.value:
+        case options.goal.option_lady_soda_dies:
+            multiworld.completion_condition[player] = lambda state: (
+                state.has_group("Nebula Soda Drinks", player, options.number_nebula_drinks.value)
+            )
+        case options.goal.option_lady_whisky_dies:
+            multiworld.completion_condition[player] = lambda state: (
+                state.has_group("Whisky Bottles", player, options.number_whisky_bottles.value)
+            )
+    '''

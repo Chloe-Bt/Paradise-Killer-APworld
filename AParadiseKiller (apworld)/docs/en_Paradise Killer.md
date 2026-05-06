@@ -16,6 +16,7 @@ The game is only tested on the steam release of paradise killer on the latest ve
 
 ## What Other Adjustments have been made to the Base Game?
 - Sphere limiters are in place for each region as definied on the map for the sole reason to prevent a massive sphere 1.
+- The name of LLD in dialogue is changed to the name of the archipelago slot name.
 
 ## In-Game Client Commands
 - `/connect {address:port} {slotname} {password}`
@@ -24,3 +25,7 @@ The game is only tested on the steam release of paradise killer on the latest ve
   - Disconnect from the multiworld
 - `/deathlink`
   - Toggles deathlink
+- `/blood {#number}`
+  - Gives the player #number of blood crystals, in case of debugging.
+- `/exile`
+  - Teleport the player back to exile, in case the player forgot an item there during the intro sequence.

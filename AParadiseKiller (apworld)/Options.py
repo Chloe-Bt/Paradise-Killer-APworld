@@ -12,9 +12,9 @@ class Goal(Choice):
     Lady Love Dies: Get X relation level with Y amount of people.
     """
     display_name = "Goal"
-    option_lady_soda_dies: 0
-    option_lady_whiky_dies: 1
-    option_lady_love_dies: 2
+    option_lady_soda_dies = 0
+    option_lady_whisky_dies = 1
+    option_lady_love_dies = 2
     default = option_lady_soda_dies
 
 class NumberSodaCans(Range):
@@ -34,9 +34,8 @@ class NumberWhiskyBottles(Range):
     """
     display_name = "Number of Whisky Bottles"
     range_start = 1
-    range_end = 7
-    default = 13
-
+    range_end = 13
+    default = 7
 class NumberRelationships(Range):
     """
     Only applicable if your goal is set to 'Lady Love Dies'.
@@ -157,7 +156,7 @@ class EnableMusicPlayer(Toggle):
 class EnableMappingRequirement(Toggle):
     """
     Enables a required key item from each main map location before you are able to acces that map area checks.",
-    Highly recommended to turn it on to prevent a massive sphere 1/2.
+    Highly recommended to turn it on to prevent massive early spheres.
     """
     display_name = "Enable Mapping Requirement:"
     default: 1

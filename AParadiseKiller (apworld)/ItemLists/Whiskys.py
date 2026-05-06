@@ -14,19 +14,19 @@ WHISKY_SEVEN        = 212
 WHISKY_MIKAMIS      = 213
 
 WHISKY_ID_TO_NAME = {
-    WHISKY_HAIR:       "Hair Trigger Whisky",
-    WHISKY_GRINNING:   "Grinning Helper Whisky",
-    WHISKY_NOR:        "No Reality Whisky",
-    WHISKY_AN:         "An Answer Lost Whisky",
-    WHISKY_CHAOS:      "Chaos Domain Whisky",
-    WHISKY_GOTHIC:     "A Gothic Second Whisky",
-    WHISKY_WINNING:    "Winning Devil Whisky",
-    WHISKY_EVENING:    "Evening Melancholy Whisky",
-    WHISKY_CODE:       "Code Whisky",
-    WHISKY_DEAD:       "Dead Man's Ambitious Whisky",
-    WHISKY_NOW:        "No Warning Whisky",
-    WHISKY_SEVEN:      "Seven Spies Whisky",
-    WHISKY_MIKAMIS:    "Mikami's Masterpiece 4 Whisky"
+    WHISKY_HAIR:       "Whisky Bottle: Hair Trigger Whisky",
+    WHISKY_GRINNING:   "Whisky Bottle: Grinning Helper Whisky",
+    WHISKY_NOR:        "Whisky Bottle: No Reality Whisky",
+    WHISKY_AN:         "Whisky Bottle: An Answer Lost Whisky",
+    WHISKY_CHAOS:      "Whisky Bottle: Chaos Domain Whisky",
+    WHISKY_GOTHIC:     "Whisky Bottle: A Gothic Second Whisky",
+    WHISKY_WINNING:    "Whisky Bottle: Winning Devil Whisky",
+    WHISKY_EVENING:    "Whisky Bottle: Evening Melancholy Whisky",
+    WHISKY_CODE:       "Whisky Bottle: Code Whisky",
+    WHISKY_DEAD:       "Whisky Bottle: Dead Man's Ambitious Whisky",
+    WHISKY_NOW:        "Whisky Bottle: No Warning Whisky",
+    WHISKY_SEVEN:      "Whisky Bottle: Seven Spies Whisky",
+    WHISKY_MIKAMIS:    "Whisky Bottle: Mikami's Masterpiece 4 Whisky"
 }
 
 ALL_WHISKY = list(WHISKY_ID_TO_NAME.keys())

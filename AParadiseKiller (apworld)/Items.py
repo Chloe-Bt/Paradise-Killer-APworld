@@ -1,9 +1,13 @@
 from BaseClasses import Item, ItemClassification as ItemClass
 from . import ParadiseKillerOptions
+
 from .ItemLists.Keys import *
 from .ItemLists.NebulaSodas import *
 from .ItemLists.Upgrades import *
 from .ItemLists.Whiskys import *
+from .ItemLists.Relics import *
+from .ItemLists.BloodCrystals import *
+
 from ..AutoWorld import World
 
 class ParadiseKillerItem(Item):
@@ -15,9 +19,9 @@ class ParadiseKillerItem(Item):
 
 def get_item_dict():
     result = {}
-
+    '''
     # Sphere inhibitors
-    for KEY_ID in ALL_KEYS:
+    for KEY_ID in ALL_KEY:
         result[KEY_ID_TO_NAME[KEY_ID]] = KEY_ID
 
     # Nebula Soda Drinks
@@ -28,10 +32,19 @@ def get_item_dict():
     for WHISKY_ID in ALL_WHISKY:
         result[WHISKY_ID_TO_NAME[WHISKY_ID]] = WHISKY_ID
 
+    # Relics
+    for RELIC_ID in ALL_RELIC:
+        result[RELIC_ID_TO_NAME[RELIC_ID]] = RELIC_ID
+    '''
+    
+    # Blood Crystals
+    for BC_ID in ALL_BC:
+        result[BC_ID_TO_NAME[BC_ID]] = BC_ID
+    
     # Upgrades
     for UPGRADE_ID in ALL_UPGRADE:
         result[UPGRADE_ID_TO_NAME[UPGRADE_ID]] = UPGRADE_ID
-    
+
     return result
 
 
@@ -40,33 +53,45 @@ def populate_item_pool(world: World, options: ParadiseKillerOptions):
     location_count = sum(1 for e in world.get_locations())
 
     item_count += add_full_base_game_items(world, options)
-    
+    '''
     if options.enable_nebula_drinks.value:
         for soda_id in ALL_SODA:
-            item = world.create_item(SODA_ID_TO_NAME[soda_id])
-            world.itempool.append(item)
+            item = ParadiseKillerItem(SODA_ID_TO_NAME[soda_id], ItemClass.progression, soda_id, world.player)
+            world.multiworld.itempool.append(item)
             item_count += 1
     
-    if options.enable_whisky_bottle.value:
+    if options.enable_whisky_bottles.value:
         for whisky_id in ALL_WHISKY:
-            item = world.create_item(WHISKY_ID_TO_NAME[whisky_id])
-            world.itempool.append(item)
+            item = ParadiseKillerItem(WHISKY_ID_TO_NAME[whisky_id], ItemClass.progression, whisky_id, world.player)
+            world.multiworld.itempool.append(item)
             item_count += 1
 
-
-    filler = location_count - item_count
+    if options.enable_mapping_requirements.value:
+        for key_id in ALL_KEY:
+            item = ParadiseKillerItem(KEY_ID_TO_NAME[key_id], ItemClass.progression, key_id, world.player)
+            world.multiworld.itempool.append(item)
+            item_count += 1
+    '''
+    filler = max(0, location_count - item_count)
     
-    for i in range(filler):
-        item = world.create_item("Blood Crystal")
-        world.itempool.append(item)
+    for _ in range(filler):
+        item = ParadiseKillerItem("Blood Crystal (filler)", ItemClass.filler, 1000, world.player)
+        world.multiworld.itempool.append(item)
 
 
 def add_full_base_game_items(world: World, options: ParadiseKillerOptions):
-    for upgrade_id in ALL_UPGRADE:
-        item = world.create_item(UPGRADE_ID_TO_NAME[upgrade_id])
-        world.itempool.append(item)
-        item_count += 1
+    item_count = 0
 
+    for upgrade_id in ALL_UPGRADE:
+        item = ParadiseKillerItem(UPGRADE_ID_TO_NAME[upgrade_id], ItemClass.progression, upgrade_id, world.player)
+        world.multiworld.itempool.append(item)
+        item_count += 1
+    '''
+    for relic_id in ALL_RELIC:
+        item = ParadiseKillerItem(RELIC_ID_TO_NAME[relic_id], ItemClass.filler, relic_id, world.player)
+        world.multiworld.itempool.append(item)
+        item_count += 1
+    '''
     return item_count
 
 def add_filler(world, options, filler):
