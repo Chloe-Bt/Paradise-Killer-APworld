@@ -63,11 +63,11 @@ def get_location_dict():
     # Citizen Apartments
     for CA_ID in ALL_CA:
         result[CA_ID_TO_NAME[CA_ID]] = CA_ID
-
+    '''
     # Citizen Housing
     for CH_ID in ALL_CH:
         result[CH_ID_TO_NAME[CH_ID]] = CH_ID
-
+    '''
     # Council Building
     for CB_ID in ALL_CB:
         result[CB_ID_TO_NAME[CB_ID]] = CB_ID
@@ -182,13 +182,13 @@ def create_locations(world: World, regions: Dict[str, Region], options: Paradise
     for CA_ID in ALL_CA:
         loc = ParadiseKillerLocation(world.player, CA_ID_TO_NAME[CA_ID], CA_ID, CA_region)
         CA_region.locations.append(loc)
-
+    '''
     # Citizen Housing
     CH_region = regions["Citizen Housing"]
     for CH_ID in ALL_CH:
         loc = ParadiseKillerLocation(world.player, CH_ID_TO_NAME[CH_ID], CH_ID, CH_region)
         CH_region.locations.append(loc)
-
+    '''
     # Council Building
     CB_region = regions["Council Building"]
     for CB_ID in ALL_CB:

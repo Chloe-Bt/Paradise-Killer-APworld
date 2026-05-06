@@ -3,21 +3,21 @@ B_Q_1   = 301
 #B_Q_2   = 302 Acctidentally put Mika quest in beach instead of Danchi
 #B_Q_3   = 303
 B_Q_4   = 304
-B_IM_1  = 205
-B_RDC_1 = 206
-B_ND_1  = 207
-B_ND_2  = 208
-B_RC_1  = 209
-B_R_1   = 210
-B_R_2   = 211
-B_S_1   = 212
-B_S_2   = 213
-B_C_1   = 214
-B_SK_1  = 215
-B_SK_2  = 216
-B_SK_3  = 217
-B_SK_4  = 218
-B_WB_1  = 219
+B_IM_1  = 305
+B_RDC_1 = 306
+B_ND_1  = 307
+B_ND_2  = 308
+B_RC_1  = 309
+B_R_1   = 310
+B_R_2   = 311
+B_S_1   = 312
+B_S_2   = 313
+B_C_1   = 314
+B_SK_1  = 315
+B_SK_2  = 316
+B_SK_3  = 317
+B_SK_4  = 318
+B_WB_1  = 319
 
 B_ID_TO_NAME = {
     B_Q_1:      "Beach: Complete Ghost Quest (Horrified Ghost)",
@@ -38,7 +38,7 @@ B_ID_TO_NAME = {
     B_SK_2:     "Beach: Starlight Skin (Ancient Text)",
     B_SK_3:     "Beach: Starlight Skin (Tropical Starlight)",
     B_SK_4:     "Beach: Starlight Skin (End of Day)",
-    B_WB_1:     "Beach: Whisky Bottle (Code Whisky)"
+    B_WB_1:     "Beach: Whisky Bottle (Code Whisky)",
 }
 
 ALL_B = list(B_ID_TO_NAME.keys())

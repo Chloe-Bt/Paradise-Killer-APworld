@@ -10,7 +10,7 @@ IL_ID_TO_NAME = {
     IL_R_1:  "Idle Lands: Wistful Photo",
     IL_R_2:  "Idle Lands: Dulled Perculator",
     IL_R_3:  "Idle Lands: Well-read Book",
-    IL_SU_1: "Idle Lands: Starlight Upgrade - Goat"
+    IL_SU_1: "Idle Lands: Starlight Upgrade (Goat)"
 }
 
 ALL_IL = list(IL_ID_TO_NAME.keys())
