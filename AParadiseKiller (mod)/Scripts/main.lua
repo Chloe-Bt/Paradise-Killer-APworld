@@ -162,6 +162,33 @@ RegisterConsoleCommandHandler("/message", function(FullCommand, userInput, Ar)
     return true
 end)
 
+RegisterConsoleCommandHandler("/exile", function(FullCommand, userInput, Ar)
+    print("Sending you back to exile.")
+    Ar:Log("Sending you back to exile.")
+    
+    local player = FindFirstOf("YMKCharacter")
+    local loc = player:K2_GetActorLocation()
+    loc.X = -70813.0
+    loc.Y = 8788.0
+    loc.Z = 73152.2734375
+    player:K2_SetActorLocation(loc, false, {}, false)
+
+    return true
+end)
+
+RegisterConsoleCommandHandler("/blood", function(FullCommand, userInput, Ar)
+    print("Here, have a blood offering.")
+    Ar:Log("Here, have a blood offering.")
+    
+    local player = FindFirstOf("YMKCharacter")
+    local inventory = player.InventoryComponent:Get()
+    local item = "GoldCoin_001"
+    inventory:GiveItem(FName(item), tonumber(userInput[1]))
+    inventory:RemoveItem(FName(item), 1)
+
+    return true
+end)
+
 function Connect(commandName,userInput, Ar) 
     if #userInput < 2 then 
         print("Error trying to connect. Correct input: connect <host> <slot> [password]")

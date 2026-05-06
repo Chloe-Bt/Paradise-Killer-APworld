@@ -121,17 +121,6 @@ function connect(server, slot, password)
         print("Bounced")
         if bounce.tags and table.concat(bounce.tags, " "):find("DeathLink") then
             print("Received DeathLink!")
-
-            local now = os.time()
-
-            -- Prevent infinite death loops
-            if now - lastDeathTime < 5 then
-                print("Ignoring DeathLink (cooldown)")
-                return
-            end
-
-            lastDeathTime = now
-
             TriggerDeath()
         end
     end
