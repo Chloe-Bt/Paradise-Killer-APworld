@@ -3,6 +3,7 @@ from .ItemLists.NebulaSodas import *
 from .ItemLists.Whiskys import *
 from .ItemLists.Keys import *
 from .ItemLists.Upgrades import *
+from .ItemLists.BloodCrystals import *
 
 from .LocationLists.AgriFields import *
 from .LocationLists.Beach import *
@@ -34,25 +35,27 @@ from .LocationLists.Tunnel import *
 
 item_name_groups = {
     "Upgrades":                 list(WHISKY_ID_TO_NAME.values()),
+    "Sphere Keys":              list(KEY_ID_TO_NAME.values()),
+    "Blood Crystals":           list(BC_ID_TO_NAME.values())
 }
 '''
     "Nebula Soda Drinks":       list(SODA_ID_TO_NAME.values()),
     "Whisky Bottles":           list(WHISKY_ID_TO_NAME.values()),
-    "Sphere Keys":              list(WHISKY_ID_TO_NAME.values())
 }'''
 
 location_name_groups = {
     "Idle Lands":               [name for name in IL_ID_TO_NAME.values()],
-}
-'''
     "Agri Fields":              [name for name in AF_ID_TO_NAME.values()],
+    "Dead Zone":                [name for name in DZ_ID_TO_NAME.values()],
     "Beach":                    [name for name in B_ID_TO_NAME.values()],
     "Citizen Apartments":       [name for name in CA_ID_TO_NAME.values()],
+}
+'''
     "Citizen Housing":          [name for name in CH_ID_TO_NAME.values()],
     "Council Building":         [name for name in CB_ID_TO_NAME.values()],
     "Court House":              [name for name in CH_ID_TO_NAME.values()],
     "Danchi":                   [name for name in D_ID_TO_NAME.values()],
-    "Dead Zone":                [name for name in DZ_ID_TO_NAME.values()],
+    
     "Deep Factory Entrance":    [name for name in DFE_ID_TO_NAME.values()],
     "Desolation Cell":          [name for name in DS_ID_TO_NAME.values()],
     "Doom Jazz's Yacht":        [name for name in DJY_ID_TO_NAME.values()],

@@ -17,6 +17,9 @@ KEY_RFD     = 315
 KEY_SA      = 316
 KEY_SG      = 317
 KEY_SHQ     = 318
+SKEY_DT     = 319
+SKEY_SL     = 320
+SKEY_AL     = 321
 
 KEY_ID_TO_NAME = {
     KEY_AF:   "Farming Supplies (unlock the Agri Fields area)",
@@ -36,7 +39,11 @@ KEY_ID_TO_NAME = {
     KEY_RFD:  "Hard Hat (unlock the Reality Folding Drive area)",
     KEY_SA:   "Master Key (unlock the Syndicate Apartments area)",
     KEY_SG:   "Syndicate Tear (unlock the Syndicate Graveyard area)",
-    KEY_SHQ:  "Control Room Access (unlock the Syndicate HQ area)"
+    KEY_SHQ:  "Control Room Access (unlock the Syndicate HQ area)",
+
+    SKEY_DT:  "Demon Translator (unlocks Shinji locations)",
+    SKEY_SL:  "Soda License (unlock ability to buy soda cans)",
+    SKEY_AL:  "Alcohol License (unlock ability to get whisky bottles)",
 }
 
 ALL_KEY = list(KEY_ID_TO_NAME.keys())

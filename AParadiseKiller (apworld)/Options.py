@@ -173,7 +173,7 @@ class ParadiseKillerOptions(PerGameCommonOptions):
 
     enable_nebula_drinks: EnableNebulaDrinks
     enable_whisky_bottles: EnableWhiskyBottles
-    enables_shinji_locations: EnableShinjiLocations
+    enable_shinji_locations: EnableShinjiLocations
     enable_starlight_skins: EnableStarlightSkins
     enable_island_momentos: EnableIslandMomentos
     enable_music_tracks: EnableMusicTracks

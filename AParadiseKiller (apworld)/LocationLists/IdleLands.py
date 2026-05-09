@@ -1,16 +1,95 @@
-#Idle Lands
+from dataclasses import dataclass, field
+from typing import Callable
+
+
+
+def get_enabled_locations(enabled_settings: set[str]):
+    """
+    Returns all locations enabled by current YAML/settings.
+    """
+    return [
+        loc for loc in IL_LOCATIONS
+        if loc.enabled_if <= enabled_settings
+    ]
+
+def get_location_ids(enabled_settings: set[str]):
+    """
+    Returns enabled location IDs only.
+    """
+
+    return [
+        loc.id
+        for loc in get_enabled_locations(enabled_settings)
+    ]
+
+
+
+@dataclass(frozen=True)
+class LocationData:
+    id: int
+    name: str
+
+    # Optional metadata
+    region: str = "Idle Lands"
+
+    # YAML/settings requirements
+    enabled_if: Callable | None = None
+
+    # Archipelago access rule
+    rule: Callable | None = None
+
+    # Optional categorization tags
+    tags: set[str] = field(default_factory=set)
+
+
+
+# Idle Lands Locations IDs
 IL_S_1   = 101
+
 IL_R_1   = 102
 IL_R_2   = 103
 IL_R_3   = 104
+
 IL_SU_1  = 105
 
+
+
+# Idle Lands Locations
+IL_LOCATIONS = [
+    LocationData(
+        id = IL_S_1,
+        name="Idle Lands: Shinji (bedroom)",
+        enabled_if = lambda options: options.enable_shinji_locations,
+        tags = {"Shinji"},
+    ),
+    LocationData(
+        id = IL_R_1,
+        name="Idle Lands: Wistful Photo",
+        tags = {"Relic"},
+    ),
+    LocationData(
+        id = IL_R_2,
+        name="Idle Lands: Dulled Perculator",
+        tags = {"Relic"},
+    ),
+    LocationData(
+        id = IL_R_3,
+        name="Idle Lands: Well-read Book",
+        tags = {"Relic"},
+    ),
+    LocationData(
+        id = IL_SU_1,
+        name="Idle Lands: Starlight Upgrade (Goat)",
+        tags = {"Starlight Upgrade"},
+    ),
+]
+
 IL_ID_TO_NAME = {
-    IL_S_1:  "Idle Lands: Shinji (bedroom)",
-    IL_R_1:  "Idle Lands: Wistful Photo",
-    IL_R_2:  "Idle Lands: Dulled Perculator",
-    IL_R_3:  "Idle Lands: Well-read Book",
-    IL_SU_1: "Idle Lands: Starlight Upgrade (Goat)"
+    loc.id: loc.name
+    for loc in IL_LOCATIONS
 }
 
-ALL_IL = list(IL_ID_TO_NAME.keys())
+IL_NAME_TO_ID = {
+    loc.name: loc.id
+    for loc in IL_LOCATIONS
+}

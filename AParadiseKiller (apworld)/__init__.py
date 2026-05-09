@@ -54,7 +54,7 @@ class ParadiseKillerWorld(World):
         slot_data = {
             "enable_nebula_drinks": self.options.enable_nebula_drinks.value,
             "enable_whisky_bottles": self.options.enable_whisky_bottles.value,
-            "enables_shinji_locations": self.options.enables_shinji_locations.value,
+            "enable_shinji_locations": self.options.enable_shinji_locations.value,
             "enable_starlight_skins": self.options.enable_starlight_skins.value,
             "enable_island_momentos": self.options.enable_island_momentos.value,
             "enable_music_tracks": self.options.enable_music_tracks.value,

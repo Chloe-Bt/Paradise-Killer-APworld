@@ -19,11 +19,11 @@ class ParadiseKillerItem(Item):
 
 def get_item_dict():
     result = {}
-    '''
+    
     # Sphere inhibitors
     for KEY_ID in ALL_KEY:
         result[KEY_ID_TO_NAME[KEY_ID]] = KEY_ID
-
+    '''
     # Nebula Soda Drinks
     for SODA_ID in ALL_SODA:
         result[SODA_ID_TO_NAME[SODA_ID]] = SODA_ID
@@ -84,6 +84,16 @@ def add_full_base_game_items(world: World, options: ParadiseKillerOptions):
 
     for upgrade_id in ALL_UPGRADE:
         item = ParadiseKillerItem(UPGRADE_ID_TO_NAME[upgrade_id], ItemClass.progression, upgrade_id, world.player)
+        world.multiworld.itempool.append(item)
+        item_count += 1
+
+    for key_id in ALL_KEY:
+        item = ParadiseKillerItem(KEY_ID_TO_NAME[key_id], ItemClass.progression, key_id, world.player)
+        world.multiworld.itempool.append(item)
+        item_count += 1
+
+    for bc_id in ALL_BC:
+        item = ParadiseKillerItem(BC_ID_TO_NAME[bc_id], ItemClass.filler, bc_id, world.player)
         world.multiworld.itempool.append(item)
         item_count += 1
     '''
