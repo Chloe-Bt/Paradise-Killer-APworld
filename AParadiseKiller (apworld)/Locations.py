@@ -120,5 +120,6 @@ def get_all_locations():
         + CH_LOCATIONS
         + CB_LOCATIONS
         + CHC_LOCATIONS
+        + D_LOCATIONS
     )
     return ALL_LOCATIONS

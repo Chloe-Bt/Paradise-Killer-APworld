@@ -222,6 +222,7 @@ CH_LOCATIONS = [
     LocationData(
         id = CH_Q_1,
         name = "Citizen Housing: Give Dog Treats to Bear",
+        rule = lambda state, options, player: state.has("Dog Treats", player),
         tags = {"Quest"},
     ),
     LocationData(
