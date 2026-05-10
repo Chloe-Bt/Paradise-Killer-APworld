@@ -8,10 +8,6 @@ def set_rules(multiworld: MultiWorld, world, player: int, options: ParadiseKille
 
 
 def set_goal(multiworld: MultiWorld, world, player: int, options: ParadiseKillerOptions):
-    multiworld.completion_condition[player] = lambda state: (
-        state.has("Starlight Upgrade: Pyramids", player)
-    )
-    '''
     match options.goal.value:
         case options.goal.option_lady_soda_dies:
             multiworld.completion_condition[player] = lambda state: (
@@ -21,4 +17,3 @@ def set_goal(multiworld: MultiWorld, world, player: int, options: ParadiseKiller
             multiworld.completion_condition[player] = lambda state: (
                 state.has_group("Whisky Bottles", player, options.number_whisky_bottles.value)
             )
-    '''

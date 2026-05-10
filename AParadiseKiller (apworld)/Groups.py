@@ -36,10 +36,10 @@ from .LocationLists.Tunnel import *
 item_name_groups = {
     "Upgrades":                 list(WHISKY_ID_TO_NAME.values()),
     "Sphere Keys":              list(KEY_ID_TO_NAME.values()),
-    "Blood Crystals":           list(BC_ID_TO_NAME.values())
+    "Blood Crystals":           list(BC_ID_TO_NAME.values()),
+    "Nebula Soda Drinks":       list(SODA_ID_TO_NAME.values()),
 }
 '''
-    "Nebula Soda Drinks":       list(SODA_ID_TO_NAME.values()),
     "Whisky Bottles":           list(WHISKY_ID_TO_NAME.values()),
 }'''
 
@@ -49,11 +49,11 @@ location_name_groups = {
     "Dead Zone":                [name for name in DZ_ID_TO_NAME.values()],
     "Beach":                    [name for name in B_ID_TO_NAME.values()],
     "Citizen Apartments":       [name for name in CA_ID_TO_NAME.values()],
-}
-'''
     "Citizen Housing":          [name for name in CH_ID_TO_NAME.values()],
     "Council Building":         [name for name in CB_ID_TO_NAME.values()],
     "Court House":              [name for name in CH_ID_TO_NAME.values()],
+}
+'''
     "Danchi":                   [name for name in D_ID_TO_NAME.values()],
     
     "Deep Factory Entrance":    [name for name in DFE_ID_TO_NAME.values()],

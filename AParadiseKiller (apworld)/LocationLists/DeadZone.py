@@ -4,19 +4,12 @@ from typing import Callable
 
 
 def get_enabled_locations(enabled_settings: set[str]):
-    """
-    Returns all locations enabled by current YAML/settings.
-    """
     return [
         loc for loc in DZ_LOCATIONS
         if loc.enabled_if <= enabled_settings
     ]
 
 def get_location_ids(enabled_settings: set[str]):
-    """
-    Returns enabled location IDs only.
-    """
-
     return [
         loc.id
         for loc in get_enabled_locations(enabled_settings)

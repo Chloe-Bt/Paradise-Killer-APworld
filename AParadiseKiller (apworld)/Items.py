@@ -23,11 +23,11 @@ def get_item_dict():
     # Sphere inhibitors
     for KEY_ID in ALL_KEY:
         result[KEY_ID_TO_NAME[KEY_ID]] = KEY_ID
-    '''
+    
     # Nebula Soda Drinks
     for SODA_ID in ALL_SODA:
         result[SODA_ID_TO_NAME[SODA_ID]] = SODA_ID
-
+    '''
     # Whisky Bottle
     for WHISKY_ID in ALL_WHISKY:
         result[WHISKY_ID_TO_NAME[WHISKY_ID]] = WHISKY_ID
@@ -53,13 +53,13 @@ def populate_item_pool(world: World, options: ParadiseKillerOptions):
     location_count = sum(1 for e in world.get_locations())
 
     item_count += add_full_base_game_items(world, options)
-    '''
+    
     if options.enable_nebula_drinks.value:
         for soda_id in ALL_SODA:
             item = ParadiseKillerItem(SODA_ID_TO_NAME[soda_id], ItemClass.progression, soda_id, world.player)
             world.multiworld.itempool.append(item)
             item_count += 1
-    
+    '''
     if options.enable_whisky_bottles.value:
         for whisky_id in ALL_WHISKY:
             item = ParadiseKillerItem(WHISKY_ID_TO_NAME[whisky_id], ItemClass.progression, whisky_id, world.player)
