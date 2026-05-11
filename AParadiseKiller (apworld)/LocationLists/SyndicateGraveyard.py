@@ -59,11 +59,16 @@ SG_LOCATIONS = [
     LocationData(
         id = SG_KI_1,
         name = "Syndicate Graveyard: Eyes Kiwami's Blood Vial",
+        rule = lambda state, options, player: (
+            state.has("Starlight Upgrade: Worship", player)
+            and state.has("Starlight Upgrade: Pyramids", player)
+        ),
         tags = {"Key Item"},
     ),
     LocationData(
         id = SG_KI_2,
         name = "Syndicate Graveyard: Grace Bloodlines' Blood Vial",
+        rule = lambda state, options, player: state.has("Starlight Upgrade: Cosmos", player),
         tags = {"Key Item"},
     ),
     LocationData(

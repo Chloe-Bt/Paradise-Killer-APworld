@@ -91,6 +91,7 @@ DZ_LOCATIONS = [
         id = DZ_C_1,
         name = "Dead Zone: Carving (Dying from Sadness)",
         enabled_if = lambda options: options.enable_shrines,
+        rule = lambda state, options, player: state.has("Blue Crest", player),
         tags = {"Carving"},
     ),
     LocationData(

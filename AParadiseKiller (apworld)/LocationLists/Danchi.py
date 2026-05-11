@@ -324,6 +324,11 @@ D_LOCATIONS = [
         id = D_SK_4,
         name = "Danchi: Starlight Skin (Dimensional Breakdown)",
         enabled_if = lambda options: options.enable_starlight_skins,
+        rule = lambda state, options, player: (
+            state.has("Imperfect Dominoes", player),
+            state.has("Island Sequence Momento - 020", player),
+            state.has("Music Track - Go! Go! Style", player),
+        ),
         tags = {"Starlight Skin"},
     ),
     LocationData(

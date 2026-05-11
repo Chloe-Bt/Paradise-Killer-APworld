@@ -79,6 +79,10 @@ B_LOCATIONS = [
     LocationData(
         id = B_Q_4,
         name="Beach: Activate Obelish Control Panel",
+        rule = lambda state, options, player: (
+            state.has("Starlight Upgrade: Cosmos", player)
+            and state.has("Starlight Upgrade: Pyramids", player)
+        ),
         tags = {"Quest"},
     ),
     LocationData(
@@ -183,6 +187,10 @@ B_LOCATIONS = [
         id = B_SK_4,
         name="Beach: Starlight Skin (End of Day)",
         enabled_if = lambda options: options.enable_starlight_skins,
+        rule = lambda state, options, player: (
+            state.has("LLD Upgrade: Air Dash", player)
+            or state.has("LLD Upgrade: Double Jump", player)
+        ),
         tags = {"Starlight Skin"},
     ),
     LocationData(

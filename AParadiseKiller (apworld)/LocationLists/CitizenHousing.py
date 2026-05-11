@@ -165,6 +165,10 @@ CH_LOCATIONS = [
     LocationData(
         id = CH_KI_3,
         name = "Citizen Housing: Pile Bunker Gauntlets",
+        rule = lambda state, options, player: (
+            state.has("Starlight Upgrade: Worship", player)
+            and state.has("Starlight Upgrade: Pyramids", player)
+        ),
         tags = {"Key Item"},
     ),
     LocationData(

@@ -429,8 +429,9 @@ CA_LOCATIONS = [
         name = "Citizen Apartments: Shinji (thin metal tower)",
         enabled_if = lambda options: options.enable_shinji_locations,
         rule = lambda state, options, player: (
-            not options.enable_demon_translator
-            or state.has("Demon Translator (unlocks Shinji locations)", player)
+            (not options.enable_demon_translator
+            or state.has("Demon Translator (unlocks Shinji locations)", player))
+            and state.has("LLD Upgrade: Double Jump", player)
         ),
         tags = {"Shinji"},
     ),

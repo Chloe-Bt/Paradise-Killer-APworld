@@ -144,6 +144,10 @@ OZ_LOCATIONS = [
         id = OZ_SK_2,
         name = "Opulent Ziggurat: Starlight Skin (Holy Refinery)",
         enabled_if = lambda options: options.enable_starlight_skins,
+        rule = lambda state, options, player: (
+            state.has("LLD Upgrade: Air Dash", player)
+            and state.has("LLD Upgrade: Double Jump", player)
+        ),
         tags = {"Starlight Skin"},
     ),
 ]

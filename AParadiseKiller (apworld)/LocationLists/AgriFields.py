@@ -148,11 +148,16 @@ AF_LOCATIONS = [
     LocationData(
         id = AF_Q_1,
         name="Agri Fields: Watering the Agri Fields",
+        rule = lambda state, options, player: state.has("Valve Handle", player, 3),
         tags = {"Quest"},
     ),
     LocationData(
         id = AF_Q_2,
         name="Agri Fields: Activate the Comms Tower",
+        rule = lambda state, options, player: (
+            state.has("Starlight Upgrade: Goat", player)
+            and state.has("Starlight Upgrade: Cosmos", player)
+        ),
         tags = {"Quest"},
     ),
     
