@@ -26,7 +26,6 @@ from .LocationLists.Overworld import *
 from .LocationLists.ParadiseGates import *
 from .LocationLists.Pyramid import *
 from .LocationLists.RealityFoldingDrive import *
-from .LocationLists.SecretBunker import *
 from .LocationLists.SecretCorridor import *
 from .LocationLists.SyndicateApartments import *
 from .LocationLists.SyndicateGraveyard import *
@@ -65,7 +64,6 @@ location_name_groups = {
     "Paradise Gates":           [name for name in PG_ID_TO_NAME.values()],
     "Pyramid":                  [name for name in P_ID_TO_NAME.values()],
     "Reality Folding Drive":    [name for name in RFD_ID_TO_NAME.values()],
-    "Secret Bunker":            [name for name in SB_ID_TO_NAME.values()],
     "Secret Corridor":          [name for name in SC_ID_TO_NAME.values()],
     "Syndicate Apartments":     [name for name in SA_ID_TO_NAME.values()],
     "Syndicate Graveyard":      [name for name in SG_ID_TO_NAME.values()],

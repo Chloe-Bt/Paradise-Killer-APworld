@@ -32,7 +32,6 @@ from .LocationLists.Overworld import *
 from .LocationLists.ParadiseGates import *
 from .LocationLists.Pyramid import *
 from .LocationLists.RealityFoldingDrive import *
-from .LocationLists.SecretBunker import *
 from .LocationLists.SecretCorridor import *
 from .LocationLists.SyndicateApartments import *
 from .LocationLists.SyndicateGraveyard import *
