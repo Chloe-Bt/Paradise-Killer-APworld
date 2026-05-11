@@ -53,10 +53,9 @@ location_name_groups = {
     "Council Building":         [name for name in CB_ID_TO_NAME.values()],
     "Court House":              [name for name in CH_ID_TO_NAME.values()],
     "Danchi":                   [name for name in D_ID_TO_NAME.values()],
+    "Deep Factory Entrance":    [name for name in DFE_ID_TO_NAME.values()],
 }
 '''
-    
-    "Deep Factory Entrance":    [name for name in DFE_ID_TO_NAME.values()],
     "Desolation Cell":          [name for name in DS_ID_TO_NAME.values()],
     "Doom Jazz's Yacht":        [name for name in DJY_ID_TO_NAME.values()],
     "Gardens":                  [name for name in G_ID_TO_NAME.values()],

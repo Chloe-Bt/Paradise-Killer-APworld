@@ -54,19 +54,19 @@ DZ_WB_1  = 906
 DZ_LOCATIONS = [
     LocationData(
         id = DZ_IM_1,
-        name="Dead Zone: Island Sequence Momento 016",
+        name = "Dead Zone: Island Sequence Momento 016",
         enabled_if = lambda options: options.enable_island_momentos,
         tags = {"Island Momento"},
     ),
     LocationData(
         id = DZ_IM_2,
-        name="Dead Zone: Island Sequence Momento 017",
+        name = "Dead Zone: Island Sequence Momento 017",
         enabled_if = lambda options: options.enable_island_momentos,
         tags = {"Island Momento"},
     ),
     LocationData(
         id = DZ_ND_1,
-        name="Dead Zone: Nebula Drink (Blood Fountain)",
+        name = "Dead Zone: Nebula Drink (Blood Fountain)",
         enabled_if = lambda options: (
             options.enable_nebula_drinks
             or options.goal == "lady_soda_dies"
@@ -79,7 +79,7 @@ DZ_LOCATIONS = [
     ),
     LocationData(
         id = DZ_S_1,
-        name="Dead Zone: Shinji",
+        name = "Dead Zone: Shinji",
         enabled_if = lambda options: options.enable_shinji_locations,
         rule = lambda state, options, player: (
             not options.enable_demon_translator
@@ -89,13 +89,13 @@ DZ_LOCATIONS = [
     ),
     LocationData(
         id = DZ_C_1,
-        name="Dead Zone: Carving (Dying from Sadness)",
+        name = "Dead Zone: Carving (Dying from Sadness)",
         enabled_if = lambda options: options.enable_shrines,
         tags = {"Carving"},
     ),
     LocationData(
         id = DZ_WB_1,
-        name="Dead Zone: Whisky Bottle (Winning Devil Whisky)",
+        name = "Dead Zone: Whisky Bottle (Winning Devil Whisky)",
         enabled_if = lambda options: (
             options.enable_whisky_bottles
             or options.goal == "lady_whisky_dies"
