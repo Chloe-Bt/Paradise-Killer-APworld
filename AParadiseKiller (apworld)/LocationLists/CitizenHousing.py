@@ -36,7 +36,6 @@ class LocationData:
 
 
 
-
 # Citizen Housing Locations IDs
 CH_IM_1  = 501
 CH_IM_2  = 502
@@ -333,7 +332,7 @@ CH_LOCATIONS = [
     ),
     LocationData(
         id = CH_C_2,
-        name = "Citizen Housing: Carving (Nighhtmare Revival)",
+        name = "Citizen Housing: Carving (Nightmare Revival)",
         enabled_if = lambda options: options.enable_shrines,
         tags = {"Carving"},
     ),

@@ -107,6 +107,7 @@ DZ_LOCATIONS = [
         tags = {"Whisky Bottle"},
     ),
 ]
+
 DZ_ID_TO_NAME = {
     loc.id: loc.name
     for loc in DZ_LOCATIONS

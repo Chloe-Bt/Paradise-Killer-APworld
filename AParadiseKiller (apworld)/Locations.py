@@ -122,5 +122,19 @@ def get_all_locations():
         + CHC_LOCATIONS
         + D_LOCATIONS
         + DFE_LOCATIONS
+        + DC_LOCATIONS
+        + DJY_LOCATIONS
+        + G_LOCATIONS
+        + KHX_LOCATIONS
+        + MB_LOCATIONS
+        + MG_LOCATIONS
+        + OZ_LOCATIONS
+        + PG_LOCATIONS
+        + P_LOCATIONS
+        + RFD_LOCATIONS
+        + SC_LOCATIONS
+        + SA_LOCATIONS
+        + SG_LOCATIONS
+        + SHQ_LOCATIONS
     )
     return ALL_LOCATIONS
