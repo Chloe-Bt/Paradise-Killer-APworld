@@ -33,14 +33,12 @@ from .LocationLists.SyndicateHQ import *
 from .LocationLists.Tunnel import *
 
 item_name_groups = {
-    "Upgrades":                 list(WHISKY_ID_TO_NAME.values()),
-    "Sphere Keys":              list(KEY_ID_TO_NAME.values()),
-    "Blood Crystals":           list(BC_ID_TO_NAME.values()),
-    "Nebula Soda Drinks":       list(SODA_ID_TO_NAME.values()),
+    "Upgrades":                 set(WHISKY_ID_TO_NAME.values()),
+    "Sphere Keys":              set(KEY_ID_TO_NAME.values()),
+    "Blood Crystals":           set(BC_ID_TO_NAME.values()),
+    "Nebula Soda Drinks":       set(SODA_ID_TO_NAME.values()),
+    "Whisky Bottles":           set(WHISKY_ID_TO_NAME.values()),
 }
-'''
-    "Whisky Bottles":           list(WHISKY_ID_TO_NAME.values()),
-}'''
 
 location_name_groups = {
     "Idle Lands":               [name for name in IL_ID_TO_NAME.values()],

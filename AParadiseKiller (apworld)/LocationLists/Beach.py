@@ -70,7 +70,7 @@ B_WB_1  = 319
 B_LOCATIONS = [
     LocationData(
         id = B_Q_1,
-        name="Beach: Complete Ghost Quest (Horrified Ghost)",
+        name = "Beach: Complete Ghost Quest (Horrified Ghost)",
         rule = lambda state, options, player: (
             state.has("Vampire Report", player)
         ),
@@ -78,7 +78,7 @@ B_LOCATIONS = [
     ),
     LocationData(
         id = B_Q_4,
-        name="Beach: Activate Obelish Control Panel",
+        name = "Beach: Activate Obelish Control Panel",
         rule = lambda state, options, player: (
             state.has("Starlight Upgrade: Cosmos", player)
             and state.has("Starlight Upgrade: Pyramids", player)
@@ -87,13 +87,13 @@ B_LOCATIONS = [
     ),
     LocationData(
         id = B_IM_1,
-        name="Beach: Island Sequence Momento 019",
+        name = "Beach: Island Sequence Momento 019",
         enabled_if = lambda options: options.enable_island_momentos,
         tags = {"Island Momento"},
     ),
     LocationData(
         id = B_RDC_1,
-        name="Beach: Radio Control Tower (Headlights on the Shore)",
+        name = "Beach: Radio Control Tower (Headlights on the Shore)",
         enabled_if = lambda options: options.enable_music_tracks,
         tags = {"Radio Control Tower"},
     ),

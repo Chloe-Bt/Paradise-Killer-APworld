@@ -1,4 +1,24 @@
-#Region inhibitors
+from dataclasses import dataclass, field
+from typing import Callable
+
+from BaseClasses import ItemClassification
+
+
+
+@dataclass(frozen=True)
+class ItemData:
+    id: int
+    name: str
+
+    # Optional metadata
+    copies: int = 1
+    classification: ItemClassification = ItemClassification.progression
+    enabled_if: Callable | None = None
+    tags: set[str] = field(default_factory=lambda: {"Keys"})
+
+
+
+# Keys Items ID's
 KEY_AF      = 301
 KEY_B       = 302
 KEY_CA      = 303
@@ -17,33 +37,156 @@ KEY_RFD     = 315
 KEY_SA      = 316
 KEY_SG      = 317
 KEY_SHQ     = 318
-SKEY_DT     = 319
-SKEY_SL     = 320
-SKEY_AL     = 321
+KEY_DJY     = 319
+KEY_DC      = 320
+KEY_MB      = 321
+KEY_DZ      = 322
+
+SKEY_DT     = 330
+SKEY_SL     = 331
+SKEY_AL     = 332
+
+
+
+# Keys Items ID's
+KEY_ITEMS = [
+    ItemData(
+        id=KEY_AF,
+        name="Farming Supplies (unlock the Agri Fields area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_B,
+        name="Beach Towel (unlock the Beach area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_CA,
+        name="Appartement Key (unlock the Citizen Apartments area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_CH,
+        name="House Key (unlock the Citizen Housing area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_CB,
+        name="Syndicate Pamphlet (unlock the Council Building area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_CHC,
+        name="Letter of Jury Duty (unlock the Court House area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_D,
+        name="Fishing Rod (unlock the Danchi area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_DFE,
+        name="Employee Card (unlock the Deep Factory Entrance area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_G,
+        name="Gardening Supplies (unlock the Gardens area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_KHX,
+        name="HX's Spare Keys (unlock the K. HX's Workshop area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_MG,
+        name="Goat, no not that goat (unlock the Mountain Gorge area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_OZ,
+        name="Holy Scriptures (unlock the Opulent Ziggurat area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_PG,
+        name="The Great Key (unlock the Paradise Gates area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_P,
+        name="Jetsky (unlock the Pyramid area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_RFD,
+        name="Hard Hat (unlock the Reality Folding Drive area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_DJY,
+        name="Yacht License (unlock the Doom Jazz's Yacht area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_SA,
+        name="Master Key (unlock the Syndicate Apartments area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_SG,
+        name="Syndicate Tear (unlock the Syndicate Graveyard area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_SHQ,
+        name="Control Room Access (unlock the Syndicate HQ area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_DC,
+        name="Prison Pass (unlock the Desolation Cell area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_MB,
+        name="Ensignia (unlock the Marshal Barracks area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    ItemData(
+        id=KEY_DZ,
+        name="Gas Mask (unlock the Dead Zone area)",
+        enabled_if=lambda options: options.enable_mapping_requirements,
+    ),
+    
+    
+    
+    
+    ItemData(
+        id=SKEY_DT,
+        name="Demon Translator (unlocks Shinji locations)",
+        enabled_if=lambda options: options.enable_shinji_locations,
+    ),
+    ItemData(
+        id=SKEY_SL,
+        name="Soda License (unlock ability to buy soda cans)",
+        enabled_if=lambda options: options.enable_soda_license,
+    ),
+    ItemData(
+        id=SKEY_AL,
+        name="Alcohol License (unlock ability to get whisky bottles)",
+        enabled_if=lambda options: options.enable_alcohol_license,
+    ),
+]
 
 KEY_ID_TO_NAME = {
-    KEY_AF:   "Farming Supplies (unlock the Agri Fields area)",
-    KEY_B:    "Beach Towel (unlock the Beach area)",
-    KEY_CA:   "Appartement Key (unlock the Citizen Apartments area)",
-    KEY_CH:   "House Key (unlock the Citizen Housing area)",
-    KEY_CB:   "Syndicate Pamphlet (unlock the Council Building area)",
-    KEY_CHC:  "Letter of Jury Duty (unlock the Court House area)",
-    KEY_D:    "Fishing Rod (unlock the Danchi area)",
-    KEY_DFE:  "Employee Card (unlock the Deep Factory Entrance area)",
-    KEY_G:    "Gardening Supplies (unlock the Gardens area)",
-    KEY_KHX:  "HX's Spare Keys (unlock the K. HX's Workshop area)",
-    KEY_MG:   "Goat, no not that goat (unlock the Mountain Gorge area)",
-    KEY_OZ:   "Holy Scriptures (unlock the Opulent Ziggurat area)",
-    KEY_PG:   "The Great Key (unlock the Paradise Gates area)",
-    KEY_P:    "Jetsky (unlock the Pyramid area)",
-    KEY_RFD:  "Hard Hat (unlock the Reality Folding Drive area)",
-    KEY_SA:   "Master Key (unlock the Syndicate Apartments area)",
-    KEY_SG:   "Syndicate Tear (unlock the Syndicate Graveyard area)",
-    KEY_SHQ:  "Control Room Access (unlock the Syndicate HQ area)",
-
-    SKEY_DT:  "Demon Translator (unlocks Shinji locations)",
-    SKEY_SL:  "Soda License (unlock ability to buy soda cans)",
-    SKEY_AL:  "Alcohol License (unlock ability to get whisky bottles)",
+    item.id: item.name
+    for item in KEY_ITEMS
 }
 
-ALL_KEY = list(KEY_ID_TO_NAME.keys())
+KEY_NAME_TO_ID = {
+    item.name: item.id
+    for item in KEY_ITEMS
+}

@@ -63,7 +63,7 @@ class ParadiseKillerWorld(World):
             "enable_relationships": self.options.enable_relationships.value,
             "enable_alcohol_license": self.options.enable_alcohol_license.value,
             "enable_soda_license": self.options.enable_soda_license.value,
-            "enable_music_player": self.options.enable_music_player.value,
+            "enable_music_tracks": self.options.enable_music_tracks.value,
             "enable_demon_translator": self.options.enable_demon_translator.value,
             "enable_mapping_requirements": self.options.enable_mapping_requirements.value,
         }

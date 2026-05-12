@@ -1,4 +1,31 @@
-# Whisky Bottles
+from dataclasses import dataclass, field
+from typing import Callable
+
+from BaseClasses import ItemClassification
+
+
+
+@dataclass(frozen=True)
+class ItemData:
+    id: int
+    name: str
+
+    # Optional metadata
+    copies: int = 1
+    classification: Callable = lambda options: (
+        ItemClassification.progression
+        if options.goal == "lady_whisky_dies"
+        else ItemClassification.filler
+    )
+    enabled_if: Callable = lambda options: (
+        options.enable_whisky_bottles
+        or options.goal == "lady_whisky_dies"
+    )
+    tags: set[str] = field(default_factory=lambda: {"Whisky Bottle"})
+
+
+
+# Whisky Bottles Items ID's
 WHISKY_HAIR         = 201
 WHISKY_GRINNING     = 202
 WHISKY_NOR          = 203
@@ -13,20 +40,31 @@ WHISKY_NOW          = 211
 WHISKY_SEVEN        = 212
 WHISKY_MIKAMIS      = 213
 
+
+
+# Whisky Bottles Items
+WHISKY_ITEMS = [
+    ItemData(WHISKY_HAIR, "Hair Trigger Whisky"),
+    ItemData(WHISKY_GRINNING, "Grinning Helper Whisky"),
+    ItemData(WHISKY_NOR, "No Reality Whisky"),
+    ItemData(WHISKY_AN, "An Answer Lost Whisky"),
+    ItemData(WHISKY_CHAOS, "Chaos Domain Whisky"),
+    ItemData(WHISKY_GOTHIC, "A Gothic Second Whisky"),
+    ItemData(WHISKY_WINNING, "Winning Devil Whisky"),
+    ItemData(WHISKY_EVENING, "Evening Melancholy Whisky"),
+    ItemData(WHISKY_CODE, "Code Whisky"),
+    ItemData(WHISKY_DEAD, "Dead Man's Ambitious Whisky"),
+    ItemData(WHISKY_NOW, "No Warning Whisky"),
+    ItemData(WHISKY_SEVEN, "Seven Spies Whisky"),
+    ItemData(WHISKY_MIKAMIS, "Mikami's Masterpiece 4 Whisky"),
+]
+
 WHISKY_ID_TO_NAME = {
-    WHISKY_HAIR:       "Whisky Bottle: Hair Trigger Whisky",
-    WHISKY_GRINNING:   "Whisky Bottle: Grinning Helper Whisky",
-    WHISKY_NOR:        "Whisky Bottle: No Reality Whisky",
-    WHISKY_AN:         "Whisky Bottle: An Answer Lost Whisky",
-    WHISKY_CHAOS:      "Whisky Bottle: Chaos Domain Whisky",
-    WHISKY_GOTHIC:     "Whisky Bottle: A Gothic Second Whisky",
-    WHISKY_WINNING:    "Whisky Bottle: Winning Devil Whisky",
-    WHISKY_EVENING:    "Whisky Bottle: Evening Melancholy Whisky",
-    WHISKY_CODE:       "Whisky Bottle: Code Whisky",
-    WHISKY_DEAD:       "Whisky Bottle: Dead Man's Ambitious Whisky",
-    WHISKY_NOW:        "Whisky Bottle: No Warning Whisky",
-    WHISKY_SEVEN:      "Whisky Bottle: Seven Spies Whisky",
-    WHISKY_MIKAMIS:    "Whisky Bottle: Mikami's Masterpiece 4 Whisky"
+    item.id: item.name
+    for item in WHISKY_ITEMS
 }
 
-ALL_WHISKY = list(WHISKY_ID_TO_NAME.keys())
+WHISKY_NAME_TO_ID = {
+    item.name: item.id
+    for item in WHISKY_ITEMS
+}

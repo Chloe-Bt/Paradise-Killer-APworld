@@ -24,14 +24,8 @@ class LocationData:
 
     # Optional metadata
     region: str = "Citizen Housing"
-
-    # YAML/settings requirements
     enabled_if: Callable | None = None
-
-    # Archipelago access rule
     rule: Callable | None = None
-
-    # Optional categorization tags
     tags: set[str] = field(default_factory=set)
 
 

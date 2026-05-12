@@ -40,7 +40,6 @@ from .LocationLists.Tunnel import *
 
 class ParadiseKillerLocation(Location):
     game: str = "Paradise Killer"
-
     def __init__(self, player, location_name, location_id, region):
         super().__init__(player, location_name, location_id, region)
 
@@ -53,60 +52,32 @@ def get_location_dict():
 def create_locations(world: World, regions: Dict[str, Region], options: ParadiseKillerOptions):
     for loc_data in get_enabled_locations(options):
         region = regions[loc_data.region]
-
         loc = ParadiseKillerLocation(
             world.player,
             loc_data.name,
             loc_data.id,
             region
         )
-
         if loc_data.rule:
             add_rule(
                 loc,
                 lambda state, rule=loc_data.rule: rule(state, options, world.player)
             )
-
         region.locations.append(loc)
 
 def get_enabled_settings(options):
-    enabled_settings = set()
-
-    if options.enable_nebula_drinks:
-        enabled_settings.add("enable_nebula_drinks")
-
-    if options.enable_whisky_bottles:
-        enabled_settings.add("enable_whisky_bottles")
-    
-    if options.enables_shinji_locations:
-        enabled_settings.add("enable_shinji_locations")
-    
-    if options.enable_starlight_skins:
-        enabled_settings.add("enable_starlight_skins")
-    
-    if options.enable_island_momentos:
-        enabled_settings.add("enable_island_momentos")
-    
-    if options.enable_music_tracks:
-        enabled_settings.add("enable_music_tracks")
-    
-    if options.enable_shrines:
-        enabled_settings.add("enable_shrines")
-    
-    if options.enable_recordings:
-        enabled_settings.add("enable_recordings")
-
-    return enabled_settings
+    return {
+        name
+        for name, value in vars(options).items()
+        if value is Truebb
+    }
 
 def get_enabled_locations(options):
     result = []
-
     for loc in get_all_locations():
         if loc.enabled_if and not loc.enabled_if(options):
             continue
-
         result.append(loc)
-
     return result
 
 def get_all_locations():

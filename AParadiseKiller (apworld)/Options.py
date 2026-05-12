@@ -183,6 +183,5 @@ class ParadiseKillerOptions(PerGameCommonOptions):
 
     enable_alcohol_license: EnableSodaLicense
     enable_soda_license: EnableAlcoholLicense
-    enable_music_player: EnableMusicPlayer
     enable_demon_translator: EnableDemonTranslator
     enable_mapping_requirements: EnableMappingRequirement

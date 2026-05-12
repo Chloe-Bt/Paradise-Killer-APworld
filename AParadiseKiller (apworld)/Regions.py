@@ -110,6 +110,15 @@ def create_regions(world, options: ParadiseKillerOptions):
         connect(world.player, "O-to-D", regions["Overworld"], regions["Danchi"])
     connect(world.player, "D-to-O", regions["Danchi"], regions["Overworld"])
 
+    # Dead Zone
+    key_item_name = KEY_ID_TO_NAME[KEY_DZ]
+    if options.enable_mapping_requirements == 1:
+        connect(world.player, "O-to-DZ", regions["Overworld"], regions["Dead Zone"],
+            lambda state, ki=key_item_name: state.has(ki, world.player))
+    else:
+        connect(world.player, "O-to-DZ", regions["Overworld"], regions["Dead Zone"])
+    connect(world.player, "DZ-to-O", regions["Dead Zone"], regions["Overworld"])
+    
     # Deep Factory Entrance
     key_item_name = KEY_ID_TO_NAME[KEY_DFE]
     if options.enable_mapping_requirements == 1:
@@ -118,7 +127,25 @@ def create_regions(world, options: ParadiseKillerOptions):
     else:
         connect(world.player, "O-to-DFE", regions["Overworld"], regions["Deep Factory Entrance"])
     connect(world.player, "DFE-to-O", regions["Deep Factory Entrance"], regions["Overworld"])
-
+    
+    # Desolation Cell
+    key_item_name = KEY_ID_TO_NAME[KEY_DC]
+    if options.enable_mapping_requirements == 1:
+        connect(world.player, "O-to-DC", regions["Overworld"], regions["Desolation Cell"],
+            lambda state, ki=key_item_name: state.has(ki, world.player))
+    else:
+        connect(world.player, "O-to-DC", regions["Overworld"], regions["Desolation Cell"])
+    connect(world.player, "DC-to-O", regions["Desolation Cell"], regions["Overworld"])
+    
+    # Doom Jazz's Yacht
+    key_item_name = KEY_ID_TO_NAME[KEY_DJY]
+    if options.enable_mapping_requirements == 1:
+        connect(world.player, "O-to-DJY", regions["Overworld"], regions["Doom Jazz's Yacht"],
+            lambda state, ki=key_item_name: state.has(ki, world.player))
+    else:
+        connect(world.player, "O-to-DJY", regions["Overworld"], regions["Doom Jazz's Yacht"])
+    connect(world.player, "DJY-to-O", regions["Doom Jazz's Yacht"], regions["Overworld"])
+    
     # Gardens
     key_item_name = KEY_ID_TO_NAME[KEY_G]
     if options.enable_mapping_requirements == 1:
@@ -137,6 +164,16 @@ def create_regions(world, options: ParadiseKillerOptions):
         connect(world.player, "O-to-KHX", regions["Overworld"], regions["K. HX's Workshop"])
     connect(world.player, "KHX-to-O", regions["K. HX's Workshop"], regions["Overworld"])
 
+    # Marshal Barracks
+    key_item_name = KEY_ID_TO_NAME[KEY_MB]
+    if options.enable_mapping_requirements == 1:
+        connect(world.player, "O-to-MB", regions["Overworld"], regions["Marshal Barracks"],
+            lambda state, ki=key_item_name: state.has(ki, world.player))
+    else:
+        connect(world.player, "O-to-MB", regions["Overworld"], regions["Marshal Barracks"])
+    connect(world.player, "MB-to-O", regions["Marshal Barracks"], regions["Overworld"])
+
+    
     # Mountain Gorge
     key_item_name = KEY_ID_TO_NAME[KEY_MG]
     if options.enable_mapping_requirements == 1:
