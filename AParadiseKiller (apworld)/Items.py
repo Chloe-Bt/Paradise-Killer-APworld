@@ -7,6 +7,9 @@ from .ItemLists.Upgrades import *
 from .ItemLists.Whiskys import *
 from .ItemLists.Relics import *
 from .ItemLists.BloodCrystals import *
+from .ItemLists.Crests import *
+from .ItemLists.IslandMomentos import *
+from .ItemLists.Carvings import *
 
 from ..AutoWorld import World
 

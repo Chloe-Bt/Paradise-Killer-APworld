@@ -16,7 +16,7 @@
 | WB               | Whisky Bottle       | 2xy                  |
 | RK               | Region Key          | 3xy                  |
 | IM               | Island Momento      | 5xy                  |
-| C                | Carving             |                      |
+| C                | Carving             | 7xy                  |
 | CR               | Crests              | 6xy                  |
  
 ## Regions
