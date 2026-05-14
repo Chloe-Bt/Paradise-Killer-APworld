@@ -31,7 +31,9 @@ class ParadiseKillerWorld(World):
 
     item_name_to_id: ClassVar[Dict[str, int]] = Items.get_item_dict()
     location_name_to_id: ClassVar[Dict[str, int]] = Locations.get_location_dict()
-
+    print(item_name_to_id)
+    print(location_name_to_id)
+    
     item_name_groups = item_name_groups
     location_name_groups = location_name_groups
 
