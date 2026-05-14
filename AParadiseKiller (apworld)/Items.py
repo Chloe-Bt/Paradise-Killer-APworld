@@ -39,7 +39,6 @@ def populate_item_pool(world: World, options: ParadiseKillerOptions):
                 world.player
             )
             world.multiworld.itempool.append(item)
-            
     filler_needed = len(world.get_locations()) - len(world.multiworld.itempool)
     filler = ParadiseKillerItem("Blood Crystal", ItemClassification.filler, 1000, world.player)
     for i in range(filler_needed):
@@ -66,6 +65,9 @@ def get_all_items():
         + SODA_ITEMS
         + UPGRADE_ITEMS
         + KEY_ITEMS
+        + IM_ITEMS
+        + CREST_ITEMS
+        + CARVING_ITEMS
     )
     return ALL_ITEMS
 
