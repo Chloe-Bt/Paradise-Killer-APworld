@@ -22,6 +22,7 @@ REC_002 = 802
 REC_003 = 803
 REC_004 = 804
 REC_005 = 805
+REC_013 = 806
 
 
 
@@ -46,6 +47,10 @@ RECORDING_ITEMS = [
     ItemData(
         id=REC_005,
         name="Recording 005",
+    ),
+    ItemData(
+        id=REC_013,
+        name="Recording 013",
     ),
 ]
 

@@ -1,7 +1,7 @@
 print("[AParadiseKiller] loaded")
 
 
-require "archipelago"
+--require "archipelago"
 
 local UEHelpers = require("UEHelpers")
 local DEBUG_KEYBIND = true
@@ -98,17 +98,22 @@ if DEBUG_KEYBIND then
     end)
 
     RegisterKeyBind(Key.NINE, { ModifierKey.CONTROL }, function()
+        print('jippie')
         local player = FindFirstOf("YMKCharacter")
         
         local inventory = player.InventoryComponent:Get()
         local item = ""
+        inventory:GiveItem(FName("Collectable_Drink_DevilNebula"), 1)
+        --[[
         inventory:GiveItem(FName("Starlight"), 1)
         inventory:GiveItem(FName("SymbolSDCard_SKY"), 1)
         inventory:GiveItem(FName("SymbolSDCard_Pyramids"), 1)
         inventory:GiveItem(FName("SymbolSDCard_Worship_FromVending"), 1)
-
+        ]]
         local knowledge = player.KnowledgeComponent:Get()
         local info = ""
+        knowledge:GainKnowledge(FName("SkippedIntro"))
+        knowledge:GainKnowledge(FName("UnlockedFastTravel"))
         knowledge:GainKnowledge(FName("DoubleJumpKnowledge"))
         knowledge:GainKnowledge(FName("DashKnowledge"))
         knowledge:GainKnowledge(FName("MeditationKnowledge"))

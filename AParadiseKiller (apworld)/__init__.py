@@ -30,9 +30,14 @@ class ParadiseKillerWorld(World):
     options: ParadiseKillerOptions
 
     item_name_to_id: ClassVar[Dict[str, int]] = Items.get_item_dict()
+    item_id_to_name: ClassVar[Dict[int, str]] = {
+        item_id: name for name, item_id in item_name_to_id.items()
+    }
+    
     location_name_to_id: ClassVar[Dict[str, int]] = Locations.get_location_dict()
-    print(item_name_to_id)
-    print(location_name_to_id)
+    location_id_to_name: ClassVar[Dict[int, str]] = {
+        location_id: name for name, location_id in location_name_to_id.items()
+    }
     
     item_name_groups = item_name_groups
     location_name_groups = location_name_groups
@@ -74,3 +79,26 @@ class ParadiseKillerWorld(World):
 
     def set_rules(self) -> None:
         Rules.set_rules(self.multiworld, self, self.player, self.options)
+
+
+
+    def dict_to_lua_table(d, indent=0):
+        spaces = " " * indent
+        lines = ["{"]
+
+        for key, value in d.items():
+            lua_key = f'["{key}"]' if isinstance(key, str) else f"[{key}]"
+
+            if isinstance(value, dict):
+                lua_value = dict_to_lua_table(value, indent + 4)
+            elif isinstance(value, str):
+                lua_value = f'"{value}"'
+            else:
+                lua_value = str(value)
+
+            lines.append(f"{spaces}    {lua_key} = {lua_value},")
+
+        lines.append(f"{spaces}}}")
+        return "\n".join(lines)
+
+

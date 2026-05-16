@@ -134,10 +134,7 @@ STARLIGHTS_ITEMS = [
         id = 928,
         name = "Starlight Skin: Incomprehensible Starlight",
     ),
-    ItemData(
-        id = 929,
-        name = "Starlight Skin: Inscribed in the Surface",
-    ),
+    
     ItemData(
         id = 930,
         name = "Starlight Skin: Inverted Pyramid",

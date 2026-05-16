@@ -27,7 +27,7 @@ CARVING_CD  = 705
 CARVING_EM  = 706
 CARVING_NR  = 707
 CARVING_EB  = 708
-CARVING_SL  = 709
+
 CARVING_NN  = 710
 CARVING_DFS = 711
 CARVING_CG  = 712
@@ -75,10 +75,8 @@ CARVING_ITEMS = [
         id=CARVING_EB,
         name="Enchanted Blue carving",
     ),
-    ItemData(
-        id=CARVING_SG,
-        name="Silent Goat carving",
-    ),
+    
+    
     ItemData(
         id=CARVING_NN,
         name="New Night carving",

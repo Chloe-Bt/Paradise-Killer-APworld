@@ -122,7 +122,7 @@ RELIC_ITEMS = [
     ),
     ItemData(
         id = 1325,
-        name = "Dazzling Obelisk",
+        name = "Dazzling Obelisk charm",
     ),
     ItemData(
         id = 1326,
@@ -210,7 +210,7 @@ RELIC_ITEMS = [
     ),
     ItemData(
         id = 1347,
-        name = "Enchanted Blue Carving",
+        name = "Exclusive Silent Goat Carving",
     ),
     ItemData(
         id = 1348,
@@ -263,14 +263,6 @@ RELIC_ITEMS = [
     ItemData(
         id = 1360,
         name = "Nauseating Offering Gems",
-    ),
-    ItemData(
-        id = 1361,
-        name = "Discarded Bottle",
-    ),
-    ItemData(
-        id = 1362,
-        name = "Lydia's Knife",
     ),
     ItemData(
         id = 1363,
