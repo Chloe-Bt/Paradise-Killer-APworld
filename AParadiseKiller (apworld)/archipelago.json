@@ -1,7 +1,7 @@
 {
     "compatible_version": 7,
     "version": 7,
-    "world_version": "0.0.2",
+    "world_version": "0.1.0",
     "game": "Paradise Killer",
     "authors": ["caffeinated_moth"]
 }

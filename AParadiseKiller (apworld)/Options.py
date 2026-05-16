@@ -166,6 +166,7 @@ class EnableMappingRequirement(Toggle):
 @dataclass
 class ParadiseKillerOptions(PerGameCommonOptions):
     goal: Goal
+    death_link: DeathLink
     number_nebula_drinks: NumberSodaCans
     number_whisky_bottles: NumberWhiskyBottles
     number_max_relationships: NumberRelationships

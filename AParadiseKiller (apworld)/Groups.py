@@ -7,6 +7,10 @@ from .ItemLists.BloodCrystals import *
 from .ItemLists.Crests import *
 from .ItemLists.IslandMomentos import *
 from .ItemLists.Carvings import *
+from .ItemLists.Recordings import *
+from .ItemLists.StarlightSkins import *
+from .ItemLists.KeyItems import *
+from .ItemLists.Relics import *
 
 from .LocationLists.AgriFields import *
 from .LocationLists.Beach import *
@@ -44,6 +48,10 @@ item_name_groups = {
     "Crests":                   set(CREST_ID_TO_NAME.values()),
     "Island Momentos":          set(IM_ID_TO_NAME.values()),
     "Carvings":                 set(CARVING_ID_TO_NAME.values()),
+    "Recordings":               set(RECORDING_ID_TO_NAME.values()),
+    "Starlight Skins":          set(STARLIGHTS_ID_TO_NAME.values()),
+    "Key Items":                set(KI_ID_TO_NAME.values()),
+    "Relics":                   set(RELIC_ID_TO_NAME.values()),
 }
 
 location_name_groups = {
