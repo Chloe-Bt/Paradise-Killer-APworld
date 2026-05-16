@@ -166,11 +166,12 @@ class EnableMappingRequirement(Toggle):
 @dataclass
 class ParadiseKillerOptions(PerGameCommonOptions):
     goal: Goal
-    death_link: DeathLink
     number_nebula_drinks: NumberSodaCans
     number_whisky_bottles: NumberWhiskyBottles
     number_max_relationships: NumberRelationships
     max_lvl_relationship: MaxLevelRelationships
+    
+    death_link: DeathLink
 
     enable_nebula_drinks: EnableNebulaDrinks
     enable_whisky_bottles: EnableWhiskyBottles
@@ -181,7 +182,7 @@ class ParadiseKillerOptions(PerGameCommonOptions):
     enable_shrines: EnableShrines
     enable_recordings: EnableRecordings
     enable_relationships: EnableRelationships
-
+    
     enable_alcohol_license: EnableSodaLicense
     enable_soda_license: EnableAlcoholLicense
     enable_demon_translator: EnableDemonTranslator
