@@ -1,7 +1,7 @@
 print("[AParadiseKiller] loaded")
 
 
---require "archipelago"
+require "archipelago"
 
 local UEHelpers = require("UEHelpers")
 local DEBUG_KEYBIND = true
@@ -103,7 +103,8 @@ if DEBUG_KEYBIND then
         
         local inventory = player.InventoryComponent:Get()
         local item = ""
-        inventory:GiveItem(FName("Collectable_Drink_DevilNebula"), 1)
+        inventory:GiveItem(FName("Crest_ApartmentStatue_01"), 1)
+        --inventory:RemoveItem(FName("Crest_ApartmentStatue_01"), 1)
         --[[
         inventory:GiveItem(FName("Starlight"), 1)
         inventory:GiveItem(FName("SymbolSDCard_SKY"), 1)
@@ -117,6 +118,26 @@ if DEBUG_KEYBIND then
         knowledge:GainKnowledge(FName("DoubleJumpKnowledge"))
         knowledge:GainKnowledge(FName("DashKnowledge"))
         knowledge:GainKnowledge(FName("MeditationKnowledge"))
+
+        RegisterHook(
+            "Function /Game/Assets/Blueprints/Blueprints_Pickups/Blueprint_Pickup_Parent.Blueprint_Pickup_Parent_C:ExecuteUbergraph_Blueprint_Pickup_Parent",
+            function(Context)
+                local actor = Context:get()
+                if not actor then return end
+
+                local fullname = actor:GetFullName()
+                if not fullname then return end
+
+                -- Extract class name
+                local className = string.match(fullname, "^[^%s]+")
+                if not className then return end
+
+                className = string.gsub(className, "^Blueprint_", "")
+                className = string.gsub(className, "_C$", "")
+
+                print("[trigger]: " .. fullname)
+            end
+        )
     end)
 
     RegisterKeyBind(Key.THREE, { ModifierKey.CONTROL }, function()
@@ -147,7 +168,7 @@ RegisterConsoleCommandHandler("/connect", function(FullCommand, userInput, Ar)
     print("Calling /connect")
     Ar:Log("Calling /connect")
 
-    Connect(FullCommand,userInput, Ar)
+    Connect(FullCommand, userInput, Ar)
     return true
 end)
 
@@ -194,23 +215,28 @@ RegisterConsoleCommandHandler("/blood", function(FullCommand, userInput, Ar)
     return true
 end)
 
-function Connect(commandName,userInput, Ar) 
-    if #userInput < 2 then 
-        print("Error trying to connect. Correct input: connect <host> <slot> [password]")
-        Ar:Log("Error trying to connect. Correct input: connect <host> <slot> [password]")  
+function Connect(commandName, userInput, Ar)
+    local command = commandName
+    local host, slot, password = command:match('/connect%s+(%S+)%s+"(.-)"%s+"(.-)"')
+
+    if not host or not slot then
+        host, slot =
+            command:match('/connect%s+(%S+)%s+"(.-)"')
+
+        password = ""
+    end
+
+    if not host or not slot then
+        print("Usage: /connect <host> \"<slot>\" [\"password\"]")
+        Ar:Log("Usage: /connect <host> \"<slot>\" [\"password\"]")
         return
     end
 
-    local host = userInput[1]
-    local slot = userInput[2]
-    local password = ""
+    password = password or ""
 
-    if #userInput >=3 then 
-        password = userInput[3]
-    end
+    print("Trying to connect to " .. host .. " with slot " .. slot .. " and password " .. password)
 
-    print("Trying to connect to "..userInput[1].." with slot "..userInput[2].." and password "..password)    
-    Ar:Log("Trying to connect to "..userInput[1].." with slot "..userInput[2].." and password "..password)  
+    Ar:Log("Trying to connect to " .. host .. " with slot " .. slot .. " and password " .. password)
 
     connectToAp(host, slot, password)
 end

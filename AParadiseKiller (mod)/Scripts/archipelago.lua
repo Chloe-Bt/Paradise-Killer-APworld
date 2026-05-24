@@ -2,8 +2,6 @@
 ---@diagnostic disable: undefined-global
 ---@diagnostic disable: undefined-field
 
-require "ArchipelagoLists"
-
 local AP = require "lua-apclientpp"
 
 -- global to this mod
@@ -60,32 +58,26 @@ function connect(server, slot, password)
     function on_items_received(items)
         print("Items received:")
 
-        local player    = FindFirstOf("YMKCharacter")
+        local player = FindFirstOf("YMKCharacter")
         local inventory = player.InventoryComponent:Get()
         local knowledge = player.KnowledgeComponent:Get()
 
         UnregisterInventory()
+
         for _, item in ipairs(items) do
             if item.index > lastIndex then
                 lastIndex = item.index
-                
-                local APitem = APItemIdToName[item.item]
-                --print("Owns: " .. APitem .. " - " .. tostring(inventory:DoesOwnItem(FName(APitem))))
-                
-                if APitem ~= nil then
-                    print("item test" .. tostring(item.item) .. tostring(knowledgeID[item.item]))
-                    if knowledgeID[item.item] then
-                        if not knowledge:DoesHaveKnowledge(FName(APitem)) then
-                            knowledge:GainKnowledge(FName(APitem))
-                        end
-                    else
-                        if not inventory:DoesOwnItem(FName(APitem)) then
-                            inventory:GiveItem(FName(APitem), 1)
-                        end
-                    end
+
+                local handler = ItemHandlers[item.item]
+
+                if handler then
+                    handler(item, inventory, knowledge)
+                else
+                    print("Unhandled item: " .. tostring(item.item))
                 end
             end
         end
+
         RegisterInventory()
     end
 
@@ -107,13 +99,13 @@ function connect(server, slot, password)
     end
 
     function on_print(msg)
-        print(tostring(msg))
+        print(msg)
     end
 
     function on_print_json(msg, extra)
         print(ap:render_json(msg, message_format))
         for key, value in pairs(extra) do
-            -- print("  " .. key .. ": " .. tostring(value))
+            print("  " .. key .. ": " .. tostring(value))
         end
     end
 
@@ -182,6 +174,9 @@ function connectToAp(host, slot, password)
     end)
 end
 
+
+
+
 function disconnect()
 ---@diagnostic disable-next-line: cast-local-type
     checked_locations = {}
@@ -195,23 +190,25 @@ function SendLocation(locationID)
         print("AP client not connected, cannot send location")
         return
     end
-    print("Sending location ID: " .. locationID)
+
+    print("Sending location ID: " .. tostring(locationID))
 
     local player    = FindFirstOf("YMKCharacter")
     local inventory = player.InventoryComponent:Get()
     local knowledge = player.KnowledgeComponent:Get()
 
-    APitem = APLocationIdToName[locationID] 
+    local APitem    = GAME_LOCATION_ID_TO_NAME[locationID]
+    --print("string: " .. APitem.tostring())
 
-    if knowledgeID[locationID] then
+    if KnowledgeItemIDs[GAME_ITEM_ID_TO_NAME[GAME_LOCATION_ID_TO_NAME[locationID]]] then
         knowledge:LoseKnowledge(FName(APitem))
     else
         inventory:RemoveItem(FName(APitem), 1)
     end
 
-    inventory:RemoveItem(FName(APLocationIdToName[locationID]), 1)
-    print("ITEM TO REMOVE: " .. tostring(APLocationIdToName[locationID]))
-    ap:LocationChecks({tonumber(locationID)})
+    print("Removed item:", itemName)
+    ap:LocationChecks({ tonumber(locationID) })
+    --ap:StatusUpdate(30)
 end
 
 function IsLocationChecked(locationID)
@@ -221,37 +218,20 @@ function IsLocationChecked(locationID)
     return checked_locations[locationID] ~= nil
 end
 
-function SendLocationFromName(locationName)
-    local locationID = GetAPLocationIDfromName(locationName)
-    if ap == nil then
-        print("AP client not connected, cannot send location")
-        return
-    end
-
-    if locationID == nil then
-        print("Location name:"..locationName.."Is not valid.")
-        return
-    end
-    print("Sending location name: "..locationName)
-
-    ap:LocationChecks({tonumber(locationID)})
-end
-
-
 function GetAPLocationIDfromName(locationName)
-    return LocationNameToAPId[locationName]
+    return GAME_LOCATION_NAME_TO_ID[locationName]
 end
 
 function GetAPNamefromLocationID(locationID)
-    return APLocationIdToName[locationID]
+    return AP_LOCATION_ID_TO_NAME[locationID]
 end
 
 function GetAPItemIDfromName(itemName)
-    return ItemNameToAPId[itemName]
+    return AP_ITEM_NAME_TO_ID[itemName]
 end
 
 function GetItemNamefromAPItemID(itemID)
-    return APItemIdToName[itemID]
+    return AP_ITEM_ID_TO_NAME[itemID]
 end
 
 function ChestNamefromID(ChestID)
@@ -282,18 +262,76 @@ end
 
 
 
---[[
-Process Inventory Management
-]]
+-- Process Inventory Management
+local ArchipelagoList = require("ArchipelagoList")
+local GameList = require("GameList")
+
+GAME_ITEM_ID_TO_NAME      = GameList.item_id_to_game_name
+
+GAME_LOCATION_NAME_TO_ID  = GameList.location_name_to_ap_id
+GAME_LOCATION_ID_TO_NAME  = {}
+for name, id in pairs(GAME_LOCATION_NAME_TO_ID) do
+    GAME_LOCATION_ID_TO_NAME[id] = name
+end
+
+ItemHandlers = {}
+crestProgress = {}
+KnowledgeItemIDs = {}
+
+function registerKnowledgeItems(list)
+    for _, id in ipairs(list) do
+        KnowledgeItemIDs[id] = true
+        ItemHandlers[id] = function(item, inventory, knowledge)
+            local name = GAME_ITEM_ID_TO_NAME[id]
+            if name and not knowledge:DoesHaveKnowledge(FName(name)) then
+                knowledge:GainKnowledge(FName(name))
+            end
+        end
+    end
+end
+
+function registerNormalItem(id)
+    ItemHandlers[id] = function(item, inventory, knowledge)
+        local name = GAME_ITEM_ID_TO_NAME[id]
+        if name and not inventory:DoesOwnItem(FName(name)) then
+            inventory:GiveItem(FName(name), 1)
+        end
+    end
+end
+
+function registerCrestItem(id)
+    ItemHandlers[id] = function(item, inventory, knowledge)
+        local locations = GAME_ITEM_ID_TO_NAME[id]
+        if not locations then return end
+
+        crestProgress[id] = crestProgress[id] or 0
+        crestProgress[id] = crestProgress[id] + 1
+        local loc = locations[crestProgress[id]]
+
+        if loc then
+            if not inventory:DoesOwnItem(FName(loc)) then
+                inventory:GiveItem(FName(loc), 1)
+            end
+        else
+            --print("Extra crest received for AP item:", id)
+        end
+    end
+end
+
+registerKnowledgeItems({405, 406, 407})
+
+for _, id in ipairs({601, 602, 603, 604, 605}) do
+    registerCrestItem(id)
+end
+
+for id, _ in pairs(GAME_ITEM_ID_TO_NAME) do
+    if not ItemHandlers[id] then
+        registerNormalItem(id)
+    end
+end
+
 preID  = 0
 postID = 0
-
-local knowledgeList = {405, 406, 407}
-knowledgeID = {}
-
-for _, id in ipairs(knowledgeList) do
-    knowledgeID[id] = true
-end
 
 function RegisterInventory()
     preID, postID = RegisterHook(
@@ -312,12 +350,14 @@ function UnregisterInventory()
     )
 end
 
+
+
 function ChangeDialogueName(slotname)
     local char = StaticFindObject("/Game/Assets/Characters/ItemData/PlayerCharacterData.PlayerCharacterData")
     char.CharacterName = FText(slotname)
 
     local char = StaticFindObject("/Game/Assets/Characters/ItemData/WhiskyDrinker1CharacterData.WhiskyDrinker1CharacterData")
-    char.CharacterName = FText("Caffeinated Moth")
+    char.CharacterName = FText("Moth")
 end
 
 function TriggerDeath()
