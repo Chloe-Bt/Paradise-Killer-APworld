@@ -11,6 +11,8 @@ from .ItemLists.Recordings import *
 from .ItemLists.StarlightSkins import *
 from .ItemLists.KeyItems import *
 from .ItemLists.Relics import *
+from .ItemLists.BloodCrystals import *
+from .ItemLists.RadioControlTowers import *
 
 from .LocationLists.AgriFields import *
 from .LocationLists.Beach import *
@@ -52,6 +54,7 @@ item_name_groups = {
     "Starlight Skins":          set(STARLIGHTS_ID_TO_NAME.values()),
     "Key Items":                set(KI_ID_TO_NAME.values()),
     "Relics":                   set(RELIC_ID_TO_NAME.values()),
+    "Radio Control Towers":     set(RADIO_ID_TO_NAME.values()),
 }
 
 location_name_groups = {

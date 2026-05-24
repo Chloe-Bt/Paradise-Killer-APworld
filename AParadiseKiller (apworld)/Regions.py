@@ -220,7 +220,9 @@ def create_regions(world, options: ParadiseKillerOptions):
     connect(world.player, "RFD-to-O", regions["Reality Folding Drive"], regions["Overworld"])
 
     # Secret Corridor
-    connect(world.player, "O-to-SC", regions["Overworld"], regions["Secret Corridor"])
+    key_item_name = "Pile Bunker Gauntlets"
+    connect(world.player, "O-to-SC", regions["Overworld"], regions["Secret Corridor"],
+            lambda state, ki=key_item_name: state.has(ki, world.player))
     connect(world.player, "SC-to-O", regions["Secret Corridor"], regions["Overworld"])
     
     # Syndicate Apartments

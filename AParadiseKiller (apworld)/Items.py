@@ -13,6 +13,8 @@ from .ItemLists.Carvings import *
 from .ItemLists.Recordings import *
 from .ItemLists.StarlightSkins import *
 from .ItemLists.KeyItems import *
+from .ItemLists.BloodCrystals import *
+from .ItemLists.RadioControlTowers import *
 
 from ..AutoWorld import World
 
@@ -45,6 +47,7 @@ def populate_item_pool(world: World, options: ParadiseKillerOptions):
         "Blood Crystal", ItemClassification.filler, 1000, world.player
     )
     for i in range(filler_needed):
+        print("FILLER")
         world.multiworld.itempool.append(filler)
 
 
@@ -74,5 +77,7 @@ def get_all_items():
         + STARLIGHTS_ITEMS
         + KI_ITEMS
         + RELIC_ITEMS
+        + BC_ITEMS
+        + RADIO_ITEMS
     )
     return ALL_ITEMS

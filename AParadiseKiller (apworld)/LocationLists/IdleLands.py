@@ -52,7 +52,6 @@ IL_LOCATIONS = [
     LocationData(
         id = IL_S_1,
         name="Idle Lands: Shinji (bedroom)",
-        enabled_if = lambda options: options.enable_shinji_locations,
         tags = {"Shinji"},
     ),
     LocationData(

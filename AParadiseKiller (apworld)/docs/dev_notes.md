@@ -8,7 +8,7 @@
 | SU               | (Starlight) Upgrade | 4xy              |
 | SK               | Starlight Skin      | 9xy              |
 | Q                | Quest               | ---------------- |
-| RCT              | Radio Control Tower | ---------------- |
+| RCT              | Radio Control Tower | 14xy             |
 | ND               | Nebula Drink        | 1xy              |
 | BC               | Blood Crystal       | 10xy-11-xy       |
 | RC               | Recording           | 8xy              |
