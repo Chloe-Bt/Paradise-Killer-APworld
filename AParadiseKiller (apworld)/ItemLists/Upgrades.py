@@ -30,13 +30,13 @@ FB_DJUMP    = 407
 
 # Upgrades Items
 UPGRADE_ITEMS = [
-    ItemData(SU_GOAT, "Starlight Upgrade: Goat"),
-    ItemData(SU_COSMOS, "Starlight Upgrade: Cosmos"),
-    ItemData(SU_WORSHIP, "Starlight Upgrade: Worship"),
-    ItemData(SU_PYRAMIDS, "Starlight Upgrade: Pyramids"),
-    ItemData(FB_MEDITATE, "LLD Upgrade: Meditate"),
-    ItemData(FB_DASH, "LLD Upgrade: Air Dash"),
-    ItemData(FB_DJUMP, "LLD Upgrade: Double Jump"),
+    ItemData(SU_GOAT,       "Starlight Upgrade: Goat"),
+    ItemData(SU_COSMOS,     "Starlight Upgrade: Cosmos"),
+    ItemData(SU_WORSHIP,    "Starlight Upgrade: Worship"),
+    ItemData(SU_PYRAMIDS,   "Starlight Upgrade: Pyramids"),
+    ItemData(FB_MEDITATE,   "LLD Upgrade: Meditate"),
+    ItemData(FB_DASH,       "LLD Upgrade: Air Dash"),
+    ItemData(FB_DJUMP,      "LLD Upgrade: Double Jump"),
 ]
 
 UPGRADE_ID_TO_NAME = {

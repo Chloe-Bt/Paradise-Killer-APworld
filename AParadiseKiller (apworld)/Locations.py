@@ -106,5 +106,6 @@ def get_all_locations():
         + SA_LOCATIONS
         + SG_LOCATIONS
         + SHQ_LOCATIONS
+        + T_LOCATIONS
     )
     return ALL_LOCATIONS

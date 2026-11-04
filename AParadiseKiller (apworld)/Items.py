@@ -16,6 +16,8 @@ from .ItemLists.KeyItems import *
 from .ItemLists.BloodCrystals import *
 from .ItemLists.RadioControlTowers import *
 
+from .ItemLists.Keys import *
+
 from ..AutoWorld import World
 
 
@@ -42,11 +44,16 @@ def populate_item_pool(world: World, options: ParadiseKillerOptions):
                 item_data.name, classification, item_data.id, world.player
             )
             world.multiworld.itempool.append(item)
-    filler_needed = len(world.get_locations()) - len(world.multiworld.itempool)
+            
+    print(f"Number of locations: {len(world.get_locations())}")
+    print(f"Number of items: {sum(item.copies for item in get_enabled_items(options))}")
+    
+    filler_needed = len(world.get_locations()) - sum(item.copies for item in get_enabled_items(options))
     filler = ParadiseKillerItem(
         "Blood Crystal", ItemClassification.filler, 1000, world.player
     )
-    for i in range(filler_needed):
+    
+    for _ in range(filler_needed):
         print("FILLER")
         world.multiworld.itempool.append(filler)
 

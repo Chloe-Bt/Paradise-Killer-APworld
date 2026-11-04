@@ -140,7 +140,7 @@ CB_LOCATIONS = [
     ),
     LocationData(
         id = CB_C_1,
-        name = "Council Building: Carving (Exclusive Slent Goat)",
+        name = "Council Building: Carving (Exclusive Silent Goat)",
         enabled_if = lambda options: options.enable_shrines,
         tags = {"Carving"},
     ),

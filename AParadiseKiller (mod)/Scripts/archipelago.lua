@@ -6,8 +6,8 @@ local AP = require "lua-apclientpp"
 
 -- global to this mod
 local game_name = "Paradise Killer"
-local items_handling = 7  -- full remote
-local client_version = {0, 6, 6}  -- optional, defaults to lib version
+local items_handling = 7         -- full remote
+--local client_version = { 0, 6, 6 } -- optional, defaults to lib version
 local message_format = AP.RenderFormat.TEXT
 
 ---@type APClient
@@ -22,42 +22,47 @@ local password = ""
 local lastIndex = -1
 
 function connect(server, slot, password)
-    print("we are calling archipelago.lua connect")
+    print("[AP] We are calling archipelago.lua connect")
     function on_socket_connected()
-        print("Socket connected")
+        print("[AP] Socket connected")
     end
 
     function on_socket_error(msg)
-        print("Socket error: " .. msg)
+        print("[AP] Socket error: " .. msg)
     end
 
     function on_socket_disconnected()
-        print("Socket disconnected")
+        print("[AP] Socket disconnected")
+        UnregisterDeathlink()
+        UnregisterInventory()
     end
 
     function on_room_info()
-        print("Room info")
-        ap:ConnectSlot(slot, password, items_handling, {"Lua-APClientPP", "DeathLink"}, client_version)
+        print("[AP] Room info")
+        ap:ConnectSlot(slot, password, items_handling, { "Lua-APClientPP", "DeathLink" }, client_version)
     end
 
     function on_slot_connected(slot_data)
-        print("Slot connected")
+        print("[AP] Slot connected")
         print(tostring(slot_data))
         --print("missing locations: " .. table.concat(ap.missing_locations, ", "))
         --print("checked locations: " .. table.concat(ap.checked_locations, ", "))
-        ap:Bounce({name="test"}, {game_name})
-        ap:ConnectUpdate(nil, {"Lua-APClientPP", "DeathLink"})
+        ap:Bounce({ name = "test" }, { game_name })
+        ap:ConnectUpdate(nil, { "Lua-APClientPP", "DeathLink" })
         print(tostring(ap:get_slot()))
         ChangeDialogueName(ap:get_slot())
+        RegisterDeathlink()
+        BuildInventoryItemDataLookup()
+        ap:StatusUpdate(30)
     end
 
     function on_slot_refused(reasons)
-        print("Slot refused: " .. table.concat(reasons, ", "))
+        print("[AP] Slot refused: " .. table.concat(reasons, ", "))
     end
 
     function on_items_received(items)
-        print("Items received:")
-
+        print("[AP] Items Received")
+        
         local player = FindFirstOf("YMKCharacter")
         local inventory = player.InventoryComponent:Get()
         local knowledge = player.KnowledgeComponent:Get()
@@ -73,7 +78,7 @@ function connect(server, slot, password)
                 if handler then
                     handler(item, inventory, knowledge)
                 else
-                    print("Unhandled item: " .. tostring(item.item))
+                    print("[AP] [bug] Unhandled item: " .. tostring(item.item))
                 end
             end
         end
@@ -82,11 +87,11 @@ function connect(server, slot, password)
     end
 
     function on_location_info(items)
-        print("Locations scouted:")
+        print("[AP] Locations scouted:")
     end
-    
+
     function on_location_checked(locations)
-        print("calling location checked")
+        print("[AP] calling location checked")
         --print("Locations checked:" .. table.concat(locations, ", "))
         --print("Checked locations: " .. table.concat(ap.checked_locations, ", "))
         for _, LocationID in ipairs(locations) do
@@ -95,7 +100,7 @@ function connect(server, slot, password)
     end
 
     function on_data_package_changed(data_package)
-        print("Data package changed")
+        print("[AP] Data package changed")
     end
 
     function on_print(msg)
@@ -110,21 +115,21 @@ function connect(server, slot, password)
     end
 
     function on_bounced(bounce)
-        print("Bounced")
+        print("[AP] Bounced")
         if bounce.tags and table.concat(bounce.tags, " "):find("DeathLink") then
-            print("Received DeathLink!")
+            print("[AP] Deathlink Received")
             TriggerDeath()
         end
     end
 
     function on_retrieved(map, keys, extra)
-        print("Retrieved:")
+        print("[AP] Retrieved:")
         -- since lua tables won't contain nil values, we can use keys array
         for _, key in ipairs(keys) do
             print("  " .. key .. ": " .. tostring(map[key]))
         end
         -- extra will include extra fields from Get
-        print("Extra:")
+        print("[AP] Extra:")
         for key, value in pairs(extra) do
             print("  " .. key .. ": " .. tostring(value))
         end
@@ -142,7 +147,6 @@ function connect(server, slot, password)
             end
         end
     end
-
 
     local uuid = ""
     ap = AP(uuid, game_name, server);
@@ -165,7 +169,7 @@ function connect(server, slot, password)
 end
 
 function connectToAp(host, slot, password)
-    ExecuteAsync(function ()
+    ExecuteAsync(function()
         connect(host, slot, password)
         RegisterInventory()
         while ap do
@@ -174,45 +178,43 @@ function connectToAp(host, slot, password)
     end)
 end
 
-
-
-
 function disconnect()
----@diagnostic disable-next-line: cast-local-type
+    ---@diagnostic disable-next-line: cast-local-type
     checked_locations = {}
----@diagnostic disable-next-line: cast-local-type
+    ---@diagnostic disable-next-line: cast-local-type
     ap = nil
     collectgarbage("collect")
 end
 
 function SendLocation(locationID)
     if ap == nil then
-        print("AP client not connected, cannot send location")
+        print("[AP] AP client not connected, cannot send location")
         return
     end
 
-    print("Sending location ID: " .. tostring(locationID))
+    print("[AP] Sending location ID: " .. tostring(locationID))
 
     local player    = FindFirstOf("YMKCharacter")
     local inventory = player.InventoryComponent:Get()
     local knowledge = player.KnowledgeComponent:Get()
 
     local APitem    = GAME_LOCATION_ID_TO_NAME[locationID]
-    --print("string: " .. APitem.tostring())
-
-    if KnowledgeItemIDs[GAME_ITEM_ID_TO_NAME[GAME_LOCATION_ID_TO_NAME[locationID]]] then
-        knowledge:LoseKnowledge(FName(APitem))
+    if APitem then
+        if KnowledgeItemIDs[GAME_ITEM_ID_TO_NAME[GAME_LOCATION_ID_TO_NAME[locationID]]] then
+            knowledge:LoseKnowledge(FName(APitem))
+        else
+            inventory:RemoveItem(FName(APitem), 1)
+        end
     else
-        inventory:RemoveItem(FName(APitem), 1)
+        print("[AP] [bug] Impossible location to send: " .. tostring(locationID) .. tostring(APitem))
     end
 
-    print("Removed item:", itemName)
-    ap:LocationChecks({ tonumber(locationID) })
-    --ap:StatusUpdate(30)
+    -- print("Removed item:", itemName)
+    ap:LocationChecks({tonumber(locationID)})
 end
 
 function IsLocationChecked(locationID)
-    if checked_locations==nil then
+    if checked_locations == nil then
         return nil
     end
     return checked_locations[locationID] ~= nil
@@ -251,8 +253,8 @@ function GetAPMissingLocations()
 end
 
 function ScoutLocations(ScoutLocations)
-    if #ScoutLocations>0 then
-        ap:LocationScouts(ScoutLocations,0)
+    if #ScoutLocations > 0 then
+        ap:LocationScouts(ScoutLocations, 0)
     end
 end
 
@@ -260,16 +262,14 @@ function SendMessage(message)
     ap:Say(message)
 end
 
+-- Inventory Management
+local ArchipelagoList    = require("ArchipelagoList")
+local GameList           = require("GameList")
 
+GAME_ITEM_ID_TO_NAME     = GameList.item_id_to_game_name
 
--- Process Inventory Management
-local ArchipelagoList = require("ArchipelagoList")
-local GameList = require("GameList")
-
-GAME_ITEM_ID_TO_NAME      = GameList.item_id_to_game_name
-
-GAME_LOCATION_NAME_TO_ID  = GameList.location_name_to_ap_id
-GAME_LOCATION_ID_TO_NAME  = {}
+GAME_LOCATION_NAME_TO_ID = GameList.location_name_to_ap_id
+GAME_LOCATION_ID_TO_NAME = {}
 for name, id in pairs(GAME_LOCATION_NAME_TO_ID) do
     GAME_LOCATION_ID_TO_NAME[id] = name
 end
@@ -293,7 +293,19 @@ end
 function registerNormalItem(id)
     ItemHandlers[id] = function(item, inventory, knowledge)
         local name = GAME_ITEM_ID_TO_NAME[id]
-        if name and not inventory:DoesOwnItem(FName(name)) then
+        
+        if name == 'Starlight' then
+            name = 'starlight'
+        end
+
+        local itemData = GetInventoryItemData(name)
+        if itemData then
+            itemData:SetPropertyValue("MaximumNumberThatCanBeOwned", 2)
+        else
+            print("Impossible item to change: " .. tostring(name))
+        end 
+
+        if not inventory:DoesOwnItem(FName(name)) then
             inventory:GiveItem(FName(name), 1)
         end
     end
@@ -318,9 +330,9 @@ function registerCrestItem(id)
     end
 end
 
-registerKnowledgeItems({405, 406, 407})
+registerKnowledgeItems({ 405, 406, 407 })
 
-for _, id in ipairs({601, 602, 603, 604, 605}) do
+for _, id in ipairs({ 601, 602, 603, 604, 605 }) do
     registerCrestItem(id)
 end
 
@@ -330,18 +342,47 @@ for id, _ in pairs(GAME_ITEM_ID_TO_NAME) do
     end
 end
 
+InventoryItemDataByName = {}
+function BuildInventoryItemDataLookup()
+    local objects = FindAllOf("InventoryItemData")
+    objects = TableConcat(objects, FindAllOf("VendingMachineItemData"))
+    objects = TableConcat(objects, FindAllOf("MusicTrackItemData"))
+    objects = TableConcat(objects, FindAllOf("MusicTrackItemData"))
+    
+    local count = 0
+    for _, obj in pairs(objects) do
+        local ok, name = pcall(function()
+            return obj:GetFName():ToString()
+        end)
+
+        if ok and name then
+            InventoryItemDataByName[name] = obj
+            count = count + 1
+            --print(string.format("[%d] %s -> %s", count, name, tostring(obj:GetFullName())))
+        else
+            print("Failed to get object name: " .. tostring(obj))
+        end
+    end
+
+    print(objects)
+end
+
+function GetInventoryItemData(itemName)
+    return InventoryItemDataByName[itemName]
+end
+
+
+
 preID  = 0
 postID = 0
-
 function RegisterInventory()
     preID, postID = RegisterHook(
         "Function /Script/ParadiseKiller.ItemMonitorComponent:OnInventoryItemGained",
-            function(Context, affectedActor, itemId)
-                SendLocation(GetAPLocationIDfromName(itemId:get():ToString()))
-            end
+        function(Context, affectedActor, itemId)
+            SendLocation(GetAPLocationIDfromName(itemId:get():ToString()))
+        end
     )
 end
-
 function UnregisterInventory()
     UnregisterHook(
         "Function /Script/ParadiseKiller.ItemMonitorComponent:OnInventoryItemGained",
@@ -352,15 +393,87 @@ end
 
 
 
+
+
+
+
 function ChangeDialogueName(slotname)
     local char = StaticFindObject("/Game/Assets/Characters/ItemData/PlayerCharacterData.PlayerCharacterData")
     char.CharacterName = FText(slotname)
 
-    local char = StaticFindObject("/Game/Assets/Characters/ItemData/WhiskyDrinker1CharacterData.WhiskyDrinker1CharacterData")
+    local char = StaticFindObject(
+    "/Game/Assets/Characters/ItemData/WhiskyDrinker1CharacterData.WhiskyDrinker1CharacterData")
     char.CharacterName = FText("Moth")
 end
 
+
+
+function ConsoleLog(message)
+    print(message)
+
+    if ConsoleAr then
+        ConsoleAr:Log(tostring(message))
+    end
+end
+
+
+deathlinkSuppressed = false
+incomingDeath = false
+function RegisterDeathlink()
+    RegisterHook(
+        "Function /Script/ParadiseKiller.PlayerRespawnComponent:FadeOutComplete_Callback",
+        function(Context)
+            if not deathlinkSuppressed then
+                ap:Bounce(
+                    {
+                        time = ap:get_server_time(),
+                        source = ap:get_slot(),
+                        cause = ap:get_slot() .. " died on Paradise Island 24."
+                    },
+                    nil,
+                    nil,
+                    {"DeathLink"}
+                )
+            end
+        end
+    )
+    RegisterHook(
+        "Function /Script/ParadiseKiller.PlayerRespawnComponent:FadeInComplete_Callback",
+        function(Context)
+            if incomingDeath then
+                local player = FindFirstOf("YMKCharacter")
+                local component = player.PlayerRespawnComponent:get()
+
+                component:SetPropertyValue(
+                    "StartRespawnIfLowerThan",
+                    -550.0
+                )
+
+                incomingDeath = false
+                deathlinkSuppressed = false
+            end
+        end
+    )
+end
 function TriggerDeath()
-    local player = FindFirstOf("YMKCharacter")
-    player:OnRespawnPressed()
+    if not incomingDeath then
+        incomingDeath = true
+        deathlinkSuppressed = true
+
+        local player = FindFirstOf("YMKCharacter")
+        local component = player.PlayerRespawnComponent:get()
+
+        component:SetPropertyValue(
+            "StartRespawnIfLowerThan",
+            999999.0
+        )
+    end
+end
+
+
+function TableConcat(t1,t2)
+    for i=1,#t2 do
+        t1[#t1+1] = t2[i]
+    end
+    return t1
 end

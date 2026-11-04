@@ -281,7 +281,7 @@ CA_LOCATIONS = [
     ),
     LocationData(
         id = CA_R_7,
-        name = "Citizen Apartments: Dazzling Obelisk",
+        name = "Citizen Apartments: Dazzling Obelisk charm",
         tags = {"Relic"},
     ),
     LocationData(

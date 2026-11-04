@@ -29,8 +29,8 @@ BC_0   = 1000
 BC_ITEMS = [
     ItemData(
         id = 1000,
-        name = "Blood Crysal",
-        copies = 4,
+        name = "Blood Crystal",
+        copies = 0,
         classification = ItemClassification.filler,
     ),
 ]
