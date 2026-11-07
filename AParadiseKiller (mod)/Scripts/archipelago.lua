@@ -36,6 +36,8 @@ function connect(server, slot, password)
 
     function on_slot_connected(slot_data)
         LogToConsole("[AP] Slot connected")
+
+        ap:ConnectUpdate(nil, {"Lua-APClientPP"})
         
         goal = slot_data.goal
         if goal == 0 then
@@ -43,8 +45,6 @@ function connect(server, slot, password)
         elseif goal == 1 then
             goal_requirement = slot_data.number_whisky_bottles
         end
-
-        ap:ConnectUpdate(nil, {"Lua-APClientPP"})
 
         ChangeDialogueName(ap:get_slot())
         RegisterDeathlink()
@@ -479,7 +479,7 @@ end
 RegisterConsoleCommandHandler("/log", function(FullCommand, userInput, Ar)
     local message = tostring(FullCommand:sub(6))
     Ar:Log(message)
-    print(message)
+    print(message .. "\n")
     
     return true
 end)
