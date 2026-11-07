@@ -21,6 +21,14 @@ Finishing any of these goals will immediately mark your game as complete, eventu
 ## What does another world's item look like in Paradise Killer?
 Items retain their original appearance. You won't know if an item is for another player until you collect it. Once collected they will still popup as if they are their original item, this is something that is yet to be fixed.
 
+## Current oddities in this archipelago implementation
+- Item pickups still show their original item first, if it is a item for you a second item popup will appear, this is something I have yet to solve.
+  - This also counts for certain item specific dialogue such as the `Judge Call` after picking up the OG starlight, or getting the `Dead Nebula Call` after gettin a check from a vending machine.
+- If there are more items then location detected during generation, the excess removed is taken from the random useless relic pool.
+- Deathlink setting in the yaml currently does nothing, you can enable deathlink in-game using the `/deathlink` toggle.
+- The spehere limiter items do not get a popup in-game except for in the ingame text client.
+- You cannot just chat in the in-game text client, if you want to send a normal message use `/say {message}` or `/message {message}`.
+
 ## In-Game Client Commands
 You can use either the ~ or f10 key to bring up the in-game client. Press it twice to actually see the text client.
 - `/connect {address:port} "{slotname}" "{password}"`
