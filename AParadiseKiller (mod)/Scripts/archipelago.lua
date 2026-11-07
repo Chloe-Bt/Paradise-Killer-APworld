@@ -1,68 +1,54 @@
----@diagnostic disable: lowercase-global
----@diagnostic disable: undefined-global
----@diagnostic disable: undefined-field
+require("functions")
 
-local AP = require "lua-apclientpp"
-
--- global to this mod
+local AP  = require("lua-apclientpp")
 local game_name = "Paradise Killer"
-local items_handling = 7         -- full remote
---local client_version = { 0, 6, 6 } -- optional, defaults to lib version
-local message_format = AP.RenderFormat.TEXT
+local items_handling = 7
 
 ---@type APClient
 local ap = nil
 local checked_locations = {}
-Goal = nil
-
--- TODO: user input
-local host = "localhost"
-local slot = "Player1"
-local password = ""
 local lastIndex = -1
 
+
+
 function connect(server, slot, password)
-    print("[AP] We are calling archipelago.lua connect")
     function on_socket_connected()
-        print("[AP] Socket connected")
+        LogToConsole("[AP] Socket connected")
     end
 
     function on_socket_error(msg)
-        print("[AP] Socket error: " .. msg)
+        LogToConsole("[AP] Socket error: " .. tostring(msg))
     end
 
     function on_socket_disconnected()
-        print("[AP] Socket disconnected")
+        LogToConsole("[AP] Socket disconnected")
         UnregisterDeathlink()
         UnregisterInventory()
+        lastIndex = -1
     end
 
     function on_room_info()
-        print("[AP] Room info")
-        ap:ConnectSlot(slot, password, items_handling, { "Lua-APClientPP", "DeathLink" }, client_version)
+        ap:ConnectSlot(slot, password, items_handling, {"Lua-APClientPP"}, client_version)
     end
 
     function on_slot_connected(slot_data)
-        print("[AP] Slot connected")
-        print(tostring(slot_data))
+        LogToConsole("[AP] Slot connected")
+        -- print(tostring(slot_data))
         --print("missing locations: " .. table.concat(ap.missing_locations, ", "))
         --print("checked locations: " .. table.concat(ap.checked_locations, ", "))
-        ap:Bounce({ name = "test" }, { game_name })
-        ap:ConnectUpdate(nil, { "Lua-APClientPP", "DeathLink" })
-        print(tostring(ap:get_slot()))
+        --ap:Bounce({ name = "test" }, { game_name })
+        ap:ConnectUpdate(nil, {"Lua-APClientPP"})
         ChangeDialogueName(ap:get_slot())
         RegisterDeathlink()
         BuildInventoryItemDataLookup()
-        ap:StatusUpdate(30)
+        -- ap:StatusUpdate(30)
     end
 
     function on_slot_refused(reasons)
-        print("[AP] Slot refused: " .. table.concat(reasons, ", "))
+        LogToConsole("[AP] Slot refused: " .. table.concat(reasons, ", "))
     end
 
     function on_items_received(items)
-        print("[AP] Items Received")
-        
         local player = FindFirstOf("YMKCharacter")
         local inventory = player.InventoryComponent:Get()
         local knowledge = player.KnowledgeComponent:Get()
@@ -78,7 +64,7 @@ function connect(server, slot, password)
                 if handler then
                     handler(item, inventory, knowledge)
                 else
-                    print("[AP] [bug] Unhandled item: " .. tostring(item.item))
+                    LogToConsole("[AP] [bug] Unhandled item: " .. item.item)
                 end
             end
         end
@@ -87,62 +73,56 @@ function connect(server, slot, password)
     end
 
     function on_location_info(items)
-        print("[AP] Locations scouted:")
+        
     end
 
     function on_location_checked(locations)
-        print("[AP] calling location checked")
-        --print("Locations checked:" .. table.concat(locations, ", "))
-        --print("Checked locations: " .. table.concat(ap.checked_locations, ", "))
         for _, LocationID in ipairs(locations) do
             checked_locations[LocationID] = true
         end
     end
 
     function on_data_package_changed(data_package)
-        print("[AP] Data package changed")
+        LogToConsole("[AP] Data package changed")
     end
 
     function on_print(msg)
-        print(msg)
+        LogToConsole(tostring(msg))
     end
 
     function on_print_json(msg, extra)
-        print(ap:render_json(msg, message_format))
-        for key, value in pairs(extra) do
-            print("  " .. key .. ": " .. tostring(value))
-        end
+        LogToConsole(ap:render_json(msg, AP.RenderFormat.TEXT))
     end
 
     function on_bounced(bounce)
-        print("[AP] Bounced")
+        LogToConsole("[AP] Bounced")
         if bounce.tags and table.concat(bounce.tags, " "):find("DeathLink") then
-            print("[AP] Deathlink Received")
+            --LogToConsole("[AP] Deathlink Received")
             TriggerDeath()
         end
     end
 
     function on_retrieved(map, keys, extra)
-        print("[AP] Retrieved:")
+        LogToConsole("[AP] Retrieved:")
         -- since lua tables won't contain nil values, we can use keys array
         for _, key in ipairs(keys) do
-            print("  " .. key .. ": " .. tostring(map[key]))
+            ConsoleLog("  " .. key .. ": " .. tostring(map[key]))
         end
         -- extra will include extra fields from Get
-        print("[AP] Extra:")
+        LogToConsole("[AP] Extra:")
         for key, value in pairs(extra) do
-            print("  " .. key .. ": " .. tostring(value))
+            ConsoleLog("  " .. key .. ": " .. tostring(value))
         end
         -- both keys and extra are optional
     end
 
     function on_set_reply(message)
-        print("Set Reply:")
+        LogToConsole("Set Reply:")
         for key, value in pairs(message) do
-            print("  " .. key .. ": " .. tostring(value))
+            ConsoleLog("  " .. key .. ": " .. tostring(value))
             if key == "value" and type(value) == "table" then
                 for subkey, subvalue in pairs(value) do
-                    print("    " .. subkey .. ": " .. tostring(subvalue))
+                    ConsoleLog("    " .. subkey .. ": " .. tostring(subvalue))
                 end
             end
         end
@@ -150,7 +130,6 @@ function connect(server, slot, password)
 
     local uuid = ""
     ap = AP(uuid, game_name, server);
-    print("Connecting to " .. server .. " ...")
     ap:set_socket_connected_handler(on_socket_connected)
     ap:set_socket_error_handler(on_socket_error)
     ap:set_socket_disconnected_handler(on_socket_disconnected)
@@ -187,13 +166,6 @@ function disconnect()
 end
 
 function SendLocation(locationID)
-    if ap == nil then
-        print("[AP] AP client not connected, cannot send location")
-        return
-    end
-
-    print("[AP] Sending location ID: " .. tostring(locationID))
-
     local player    = FindFirstOf("YMKCharacter")
     local inventory = player.InventoryComponent:Get()
     local knowledge = player.KnowledgeComponent:Get()
@@ -206,7 +178,7 @@ function SendLocation(locationID)
             inventory:RemoveItem(FName(APitem), 1)
         end
     else
-        print("[AP] [bug] Impossible location to send: " .. tostring(locationID) .. tostring(APitem))
+        LogToConsole("[AP] [bug] Impossible location to send: " .. tostring(locationID) .. tostring(APitem))
     end
 
     -- print("Removed item:", itemName)
@@ -293,16 +265,17 @@ end
 function registerNormalItem(id)
     ItemHandlers[id] = function(item, inventory, knowledge)
         local name = GAME_ITEM_ID_TO_NAME[id]
-        
-        if name == 'Starlight' then
-            name = 'starlight'
+
+        if not name or name == "" then
+            return
         end
 
         local itemData = GetInventoryItemData(name)
+
         if itemData then
             itemData:SetPropertyValue("MaximumNumberThatCanBeOwned", 2)
         else
-            print("Impossible item to change: " .. tostring(name))
+            LogToConsole("[AP] Impossible item to change: " .. tostring(name))
         end 
 
         if not inventory:DoesOwnItem(FName(name)) then
@@ -347,7 +320,6 @@ function BuildInventoryItemDataLookup()
     local objects = FindAllOf("InventoryItemData")
     objects = TableConcat(objects, FindAllOf("VendingMachineItemData"))
     objects = TableConcat(objects, FindAllOf("MusicTrackItemData"))
-    objects = TableConcat(objects, FindAllOf("MusicTrackItemData"))
     
     local count = 0
     for _, obj in pairs(objects) do
@@ -360,26 +332,27 @@ function BuildInventoryItemDataLookup()
             count = count + 1
             --print(string.format("[%d] %s -> %s", count, name, tostring(obj:GetFullName())))
         else
-            print("Failed to get object name: " .. tostring(obj))
+            ConsoleLog("Failed to get object name: " .. tostring(obj))
         end
     end
-
-    print(objects)
 end
-
 function GetInventoryItemData(itemName)
     return InventoryItemDataByName[itemName]
 end
 
 
 
-preID  = 0
-postID = 0
+local preID  = 0
+local postID = 0
 function RegisterInventory()
     preID, postID = RegisterHook(
         "Function /Script/ParadiseKiller.ItemMonitorComponent:OnInventoryItemGained",
         function(Context, affectedActor, itemId)
-            SendLocation(GetAPLocationIDfromName(itemId:get():ToString()))
+            local itemName = itemId:get():ToString()
+            local locationID = GetAPLocationIDfromName(itemName)
+            if locationID and not IsLocationChecked(locationID) then
+                SendLocation(locationID)
+            end
         end
     )
 end
@@ -390,10 +363,6 @@ function UnregisterInventory()
         postID
     )
 end
-
-
-
-
 
 
 
@@ -408,22 +377,13 @@ end
 
 
 
-function ConsoleLog(message)
-    print(message)
-
-    if ConsoleAr then
-        ConsoleAr:Log(tostring(message))
-    end
-end
-
-
-deathlinkSuppressed = false
-incomingDeath = false
+local deathlinkSuppressed, incomingDeath, deathlinkEnabled = false, false, false
+local preDLFO, postDLFO, preDLFI, postDLFI = 0, 0, 0, 0
 function RegisterDeathlink()
-    RegisterHook(
+    preDLFO, postDLFO = RegisterHook(
         "Function /Script/ParadiseKiller.PlayerRespawnComponent:FadeOutComplete_Callback",
         function(Context)
-            if not deathlinkSuppressed then
+            if deathlinkEnabled and not deathlinkSuppressed then
                 ap:Bounce(
                     {
                         time = ap:get_server_time(),
@@ -437,12 +397,12 @@ function RegisterDeathlink()
             end
         end
     )
-    RegisterHook(
+    preDLFI, postDLFI = RegisterHook(
         "Function /Script/ParadiseKiller.PlayerRespawnComponent:FadeInComplete_Callback",
         function(Context)
-            if incomingDeath then
+            if deathlinkEnabled and incomingDeath then
                 local player = FindFirstOf("YMKCharacter")
-                local component = player.PlayerRespawnComponent:get()
+                local component = player.PlayerRespawnComponent:Get()
 
                 component:SetPropertyValue(
                     "StartRespawnIfLowerThan",
@@ -455,13 +415,25 @@ function RegisterDeathlink()
         end
     )
 end
+function UnregisterDeathlink()
+    UnregisterHook(
+        "Function /Script/ParadiseKiller.PlayerRespawnComponent:FadeOutComplete_Callback",
+        preDLFO,
+        postDLFO
+    )
+    UnregisterHook(
+        "Function /Script/ParadiseKiller.PlayerRespawnComponent:FadeInComplete_Callback",
+        preDLFI,
+        postDLFI
+    )    
+end
 function TriggerDeath()
     if not incomingDeath then
         incomingDeath = true
         deathlinkSuppressed = true
 
         local player = FindFirstOf("YMKCharacter")
-        local component = player.PlayerRespawnComponent:get()
+        local component = player.PlayerRespawnComponent:Get()
 
         component:SetPropertyValue(
             "StartRespawnIfLowerThan",
@@ -469,6 +441,20 @@ function TriggerDeath()
         )
     end
 end
+function ToggleDeathlink()
+    deathlinkEnabled = not deathlinkEnabled
+    local tags = nil
+    if deathlinkEnabled then
+        tags = {"Lua-APClientPP", "DeathLink"}
+    else
+        tags = {"Lua-APClientPP"}
+    end
+
+    ap:ConnectUpdate(nil, tags)
+
+    --ConsoleLog("[AP] [deathlink] " .. (deathlinkEnabled and "Enabled" or "Disabled"))
+end
+
 
 
 function TableConcat(t1,t2)
@@ -476,4 +462,19 @@ function TableConcat(t1,t2)
         t1[#t1+1] = t2[i]
     end
     return t1
+end
+
+
+
+RegisterConsoleCommandHandler("/log", function(FullCommand, userInput, Ar)
+    Ar:Log(tostring(FullCommand:sub(6)))
+    
+    return true
+end)
+function LogToConsole(Message)
+    local Kismet = StaticFindObject("/Script/Engine.Default__KismetSystemLibrary")
+    local pc = FindFirstOf("PlayerController")
+    local world = FindFirstOf("World")
+
+    Kismet:ExecuteConsoleCommand(world, "/log " .. Message, pc)
 end
