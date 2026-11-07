@@ -1,5 +1,6 @@
 print("[AP] mod loaded")
 require("archipelago")
+require("functions")
 
 local DEBUG     = false
 UEHelpers       = require("UEHelpers")

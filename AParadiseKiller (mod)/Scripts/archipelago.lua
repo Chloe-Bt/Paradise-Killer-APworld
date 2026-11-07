@@ -1,5 +1,3 @@
-require("functions")
-
 local AP  = require("lua-apclientpp")
 local game_name = "Paradise Killer"
 local items_handling = 7
@@ -11,6 +9,7 @@ local lastIndex = -1
 
 
 
+-- General AP stuff
 function connect(server, slot, password)
     function on_socket_connected()
         LogToConsole("[AP] Socket connected")
@@ -22,25 +21,27 @@ function connect(server, slot, password)
 
     function on_socket_disconnected()
         LogToConsole("[AP] Socket disconnected")
+
         UnregisterDeathlink()
         UnregisterInventory()
         lastIndex = -1
     end
 
     function on_room_info()
+        LogToConsole("[AP] Room info collected")
+
         ap:ConnectSlot(slot, password, items_handling, {"Lua-APClientPP"}, client_version)
     end
 
     function on_slot_connected(slot_data)
         LogToConsole("[AP] Slot connected")
-        -- print(tostring(slot_data))
-        --print("missing locations: " .. table.concat(ap.missing_locations, ", "))
-        --print("checked locations: " .. table.concat(ap.checked_locations, ", "))
-        --ap:Bounce({ name = "test" }, { game_name })
+        
         ap:ConnectUpdate(nil, {"Lua-APClientPP"})
+
         ChangeDialogueName(ap:get_slot())
         RegisterDeathlink()
         BuildInventoryItemDataLookup()
+
         -- ap:StatusUpdate(30)
     end
 
@@ -97,32 +98,31 @@ function connect(server, slot, password)
     function on_bounced(bounce)
         LogToConsole("[AP] Bounced")
         if bounce.tags and table.concat(bounce.tags, " "):find("DeathLink") then
-            --LogToConsole("[AP] Deathlink Received")
+            LogToConsole("[AP] Deathlink Received")
+
             TriggerDeath()
         end
     end
 
     function on_retrieved(map, keys, extra)
         LogToConsole("[AP] Retrieved:")
-        -- since lua tables won't contain nil values, we can use keys array
         for _, key in ipairs(keys) do
-            ConsoleLog("  " .. key .. ": " .. tostring(map[key]))
+            LogToConsole("  " .. key .. ": " .. tostring(map[key]))
         end
-        -- extra will include extra fields from Get
+        
         LogToConsole("[AP] Extra:")
         for key, value in pairs(extra) do
-            ConsoleLog("  " .. key .. ": " .. tostring(value))
+            LogToConsole("  " .. key .. ": " .. tostring(value))
         end
-        -- both keys and extra are optional
     end
 
     function on_set_reply(message)
-        LogToConsole("Set Reply:")
+        LogToConsole("[AP] Set Reply:")
         for key, value in pairs(message) do
-            ConsoleLog("  " .. key .. ": " .. tostring(value))
+            LogToConsole("  " .. key .. ": " .. tostring(value))
             if key == "value" and type(value) == "table" then
                 for subkey, subvalue in pairs(value) do
-                    ConsoleLog("    " .. subkey .. ": " .. tostring(subvalue))
+                    LogToConsole("    " .. subkey .. ": " .. tostring(subvalue))
                 end
             end
         end
@@ -158,11 +158,15 @@ function connectToAp(host, slot, password)
 end
 
 function disconnect()
-    ---@diagnostic disable-next-line: cast-local-type
+    LogToConsole("[AP] Disconnected")
+    
     checked_locations = {}
-    ---@diagnostic disable-next-line: cast-local-type
     ap = nil
     collectgarbage("collect")
+
+    UnregisterDeathlink()
+    UnregisterInventory()
+    lastIndex = -1
 end
 
 function SendLocation(locationID)
@@ -171,6 +175,7 @@ function SendLocation(locationID)
     local knowledge = player.KnowledgeComponent:Get()
 
     local APitem    = GAME_LOCATION_ID_TO_NAME[locationID]
+
     if APitem then
         if KnowledgeItemIDs[GAME_ITEM_ID_TO_NAME[GAME_LOCATION_ID_TO_NAME[locationID]]] then
             knowledge:LoseKnowledge(FName(APitem))
@@ -181,7 +186,6 @@ function SendLocation(locationID)
         LogToConsole("[AP] [bug] Impossible location to send: " .. tostring(locationID) .. tostring(APitem))
     end
 
-    -- print("Removed item:", itemName)
     ap:LocationChecks({tonumber(locationID)})
 end
 
@@ -189,6 +193,7 @@ function IsLocationChecked(locationID)
     if checked_locations == nil then
         return nil
     end
+
     return checked_locations[locationID] ~= nil
 end
 
@@ -234,8 +239,11 @@ function SendMessage(message)
     ap:Say(message)
 end
 
+
+
 -- Inventory Management
-local ArchipelagoList    = require("ArchipelagoList")
+--- Both of these are technical debt from the manual days, and this inventory/itemID system will be changed during the first mayor update.
+local ArchipelagoList    = require("ArchipelagoList") 
 local GameList           = require("GameList")
 
 GAME_ITEM_ID_TO_NAME     = GameList.item_id_to_game_name
@@ -275,7 +283,7 @@ function registerNormalItem(id)
         if itemData then
             itemData:SetPropertyValue("MaximumNumberThatCanBeOwned", 2)
         else
-            LogToConsole("[AP] Impossible item to change: " .. tostring(name))
+            LogToConsole("[AP] Impossible item to change property (MaximumNumberThatCanBeOwned) for: " .. tostring(name))
         end 
 
         if not inventory:DoesOwnItem(FName(name)) then
@@ -297,8 +305,6 @@ function registerCrestItem(id)
             if not inventory:DoesOwnItem(FName(loc)) then
                 inventory:GiveItem(FName(loc), 1)
             end
-        else
-            --print("Extra crest received for AP item:", id)
         end
     end
 end
@@ -330,7 +336,6 @@ function BuildInventoryItemDataLookup()
         if ok and name then
             InventoryItemDataByName[name] = obj
             count = count + 1
-            --print(string.format("[%d] %s -> %s", count, name, tostring(obj:GetFullName())))
         else
             ConsoleLog("Failed to get object name: " .. tostring(obj))
         end
@@ -340,12 +345,10 @@ function GetInventoryItemData(itemName)
     return InventoryItemDataByName[itemName]
 end
 
-
-
-local preID  = 0
-local postID = 0
+local preIDIM  = 0
+local postIDIM = 0
 function RegisterInventory()
-    preID, postID = RegisterHook(
+    preIDIM, postIDIM = RegisterHook(
         "Function /Script/ParadiseKiller.ItemMonitorComponent:OnInventoryItemGained",
         function(Context, affectedActor, itemId)
             local itemName = itemId:get():ToString()
@@ -359,13 +362,14 @@ end
 function UnregisterInventory()
     UnregisterHook(
         "Function /Script/ParadiseKiller.ItemMonitorComponent:OnInventoryItemGained",
-        preID,
-        postID
+        preIDIM,
+        postIDIM
     )
 end
 
 
 
+-- Cosmetic changes
 function ChangeDialogueName(slotname)
     local char = StaticFindObject("/Game/Assets/Characters/ItemData/PlayerCharacterData.PlayerCharacterData")
     char.CharacterName = FText(slotname)
@@ -377,6 +381,7 @@ end
 
 
 
+-- Deathlink system
 local deathlinkSuppressed, incomingDeath, deathlinkEnabled = false, false, false
 local preDLFO, postDLFO, preDLFI, postDLFI = 0, 0, 0, 0
 function RegisterDeathlink()
@@ -451,23 +456,15 @@ function ToggleDeathlink()
     end
 
     ap:ConnectUpdate(nil, tags)
-
-    --ConsoleLog("[AP] [deathlink] " .. (deathlinkEnabled and "Enabled" or "Disabled"))
 end
 
 
 
-function TableConcat(t1,t2)
-    for i=1,#t2 do
-        t1[#t1+1] = t2[i]
-    end
-    return t1
-end
-
-
-
+-- Textclient onzin
 RegisterConsoleCommandHandler("/log", function(FullCommand, userInput, Ar)
-    Ar:Log(tostring(FullCommand:sub(6)))
+    local message = tostring(FullCommand:sub(6))
+    Ar:Log(message)
+    print(message)
     
     return true
 end)
