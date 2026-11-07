@@ -4,7 +4,7 @@
 - Shuffles nebula drinks, whiskey bottles, relics, key items, Starlight (upgrades), LLD upgrades away from their original items.
 
 ## What is the goal of Paradise Killer in Archipelago
-The goal of Paradise Killer can be:
+The goals of Paradise Killer can be:
 - Lady Soda Dies -	get X amount of nebula soda drinks send your way
 - Lady Whisky Dies -	get X amount of whisky bottles send your way
 
