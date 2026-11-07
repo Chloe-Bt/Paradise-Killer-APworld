@@ -36,7 +36,7 @@ return {
         [121] = "Collectable_Drink_ElusiveChocolate_2",
         [122] = "Collectable_Drink_BizzareLychee_2",
         [123] = "Collectable_Drink_Provocative",
-        [401] = "Starlight",
+        [401] = "starlight",
         [402] = "SymbolSDCard_Sky",
         [403] = "SymbolSDCard_Worship_FromVending",
         [404] = "SymbolSDCard_Pyramids",
