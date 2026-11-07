@@ -86,6 +86,7 @@ class ParadiseKillerWorld(World):
 
     def fill_slot_data(self) -> Mapping[str, Any]:
         slot_data = {
+            "goal":                         self.options.goal.value,
             "death_link":                   self.options.death_link.value,
             "enable_nebula_drinks":         self.options.enable_nebula_drinks.value,
             "enable_whisky_bottles":        self.options.enable_whisky_bottles.value,
@@ -98,7 +99,6 @@ class ParadiseKillerWorld(World):
             "enable_relationships":         self.options.enable_relationships.value,
             "enable_alcohol_license":       self.options.enable_alcohol_license.value,
             "enable_soda_license":          self.options.enable_soda_license.value,
-            "enable_music_tracks":          self.options.enable_music_tracks.value,
             "enable_demon_translator":      self.options.enable_demon_translator.value,
             "enable_mapping_requirements":  self.options.enable_mapping_requirements.value,
         }
