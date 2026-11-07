@@ -1,12 +1,10 @@
 from dataclasses import dataclass
 from random import choice
+from Options import PerGameCommonOptions, DeathLink, Choice, Visibility, Toggle, DefaultOnToggle, OptionGroup, Range, StartInventoryPool
 
-from Options import PerGameCommonOptions, DeathLink, Choice, Toggle, OptionGroup, Range, StartInventoryPool
-
-#Goals
+# Goal Settings
 class Goal(Choice):
     """
-    Choose your goal for the multiworld
     Lady Soda Dies: Get X amount of nebula soda drinks.
     Lady Whisky Dies: Get X amount of whisky bottles.
     Lady Love Dies: Get X relation level with Y amount of people.
@@ -14,7 +12,6 @@ class Goal(Choice):
     display_name = "Goal"
     option_lady_soda_dies = 0
     option_lady_whisky_dies = 1
-    option_lady_love_dies = 2
     default = option_lady_soda_dies
 
 class NumberSodaCans(Range):
@@ -25,7 +22,7 @@ class NumberSodaCans(Range):
     display_name = "Number of Nebula Soda cans"
     range_start = 1
     range_end = 23
-    default = 12
+    default = 17
 
 class NumberWhiskyBottles(Range):
     """
@@ -35,7 +32,8 @@ class NumberWhiskyBottles(Range):
     display_name = "Number of Whisky Bottles"
     range_start = 1
     range_end = 13
-    default = 7
+    default = 10
+
 class NumberRelationships(Range):
     """
     Only applicable if your goal is set to 'Lady Love Dies'.
@@ -45,6 +43,7 @@ class NumberRelationships(Range):
     range_start = 1
     range_end = 10
     default = 5
+    visibility = Visibility.none
 
 class MaxLevelRelationships(Range):
     """
@@ -55,135 +54,126 @@ class MaxLevelRelationships(Range):
     range_start = 1
     range_end = 5
     default = 3
+    visibility = Visibility.none
 
 
 
-#Randomizer settings
-class EnableNebulaDrinks(Toggle):
+# Randomizer Settings
+class EnableNebulaDrinks(DefaultOnToggle):
     """
     Enable Nebula Soda Drinks as items and locations.
     """
     display_name = "Enable Nebula Soda Drinks"
-    default: 1
 
-class EnableWhiskyBottles(Toggle):
+class EnableWhiskyBottles(DefaultOnToggle):
     """
     Enable Whisky Bottles as items and locations.
     """
     display_name = "Enable Whisky Bottles"
-    default: 1
 
 class EnableShinjiLocations(Toggle):
     """
     Enable Shinji locations in the game world.
     """
     display_name = "Enable Shinji Locations"
-    default: 1
+    visibility = Visibility.none
 
-class EnableStarlightSkins(Toggle):
+class EnableStarlightSkins(DefaultOnToggle):
     """
     Enable Starlight skins as items and locations.
     """
     display_name = "Enable Starlight Skins"
-    default: 1
 
-class EnableIslandMomentos(Toggle):
+class EnableIslandMomentos(DefaultOnToggle):
     """
     Enable Island Mementos as items and locations.
     """
     display_name = "Enable Island Momentos"
-    default: 1
 
-class EnableMusicTracks(Toggle):
+class EnableMusicTracks(DefaultOnToggle):
     """
     Enable in-game music tracks as items and locations.
     """
     display_name = "Enable Music Tracks"
-    default: 1
 
-class EnableShrines(Toggle):
+class EnableShrines(DefaultOnToggle):
     """
     Enable shrines as items and locations.
     """
     display_name = "Enable Shrines"
-    default: 1
 
-class EnableRecordings(Toggle):
+class EnableRecordings(DefaultOnToggle):
     """
     Enable collectible recordings as items and locations.
     """
     display_name = "Enable Recordings"
-    default: 1
-
+    
 class EnableRelationships(Toggle):
     """
     Enable character relationship mechanics in the game.
     """
     display_name = "Enable Relationships"
-    default: 1
+    visibility = Visibility.none
 
 
 
-#Sphere limiters
-class EnableAlcoholLicense(Toggle):
+#Sphere Limiters
+class EnableAlcoholLicense(DefaultOnToggle):
     """
     Enables a required key item before you are able to get checks from Whisky Bottles
     """
     display_name = "Enable Alcohol License"
     default: 1
 
-class EnableSodaLicense(Toggle):
+class EnableSodaLicense(DefaultOnToggle):
     """
     Enables a required key item before you are able to get checks from the Nebula Drink vending machines.
     """
     display_name = "Enable Soda License"
-    default: 1
 
 class EnableDemonTranslator(Toggle):
     """
     Enables a required key item before you are able to get checks from talking to Sjinji.
     """
     display_name = "Enable Demon Translator"
-    default: 1
+    visibility = Visibility.none
 
-class EnableMusicPlayer(Toggle):
+class EnableMusicPlayer(DefaultOnToggle):
     """
     Enables a require key item before you are able to get checks from the broadcasting towers on the island.
     """
     display_name = "Enable Music Player:"
-    default: 1
 
-class EnableMappingRequirement(Toggle):
+class EnableMappingRequirement(DefaultOnToggle):
     """
     Enables a required key item from each main map location before you are able to acces that map area checks.",
     Highly recommended to turn it on to prevent massive early spheres.
     """
     display_name = "Enable Mapping Requirement:"
-    default: 1
 
 
 
 @dataclass
 class ParadiseKillerOptions(PerGameCommonOptions):
-    goal: Goal
-    number_nebula_drinks: NumberSodaCans
-    number_whisky_bottles: NumberWhiskyBottles
-    number_max_relationships: NumberRelationships
-    max_lvl_relationship: MaxLevelRelationships
+    goal:                        Goal
+    number_nebula_drinks:        NumberSodaCans
+    number_whisky_bottles:       NumberWhiskyBottles
+    number_max_relationships:    NumberRelationships
+    max_lvl_relationship:        MaxLevelRelationships
     
-    death_link: DeathLink
+    death_link:                  DeathLink
 
-    enable_nebula_drinks: EnableNebulaDrinks
-    enable_whisky_bottles: EnableWhiskyBottles
-    enable_shinji_locations: EnableShinjiLocations
-    enable_starlight_skins: EnableStarlightSkins
-    enable_island_momentos: EnableIslandMomentos
-    enable_music_tracks: EnableMusicTracks
-    enable_shrines: EnableShrines
-    enable_recordings: EnableRecordings
-    enable_relationships: EnableRelationships
+    enable_nebula_drinks:        EnableNebulaDrinks
+    enable_whisky_bottles:       EnableWhiskyBottles
+    enable_shinji_locations:     EnableShinjiLocations
+    enable_starlight_skins:      EnableStarlightSkins
+    enable_island_momentos:      EnableIslandMomentos
+    enable_music_tracks:         EnableMusicTracks
+    enable_shrines:              EnableShrines
+    enable_recordings:           EnableRecordings
+    enable_relationships:        EnableRelationships
     
-    enable_alcohol_license: EnableSodaLicense
-    enable_soda_license: EnableAlcoholLicense
-    enable_demon_translator: EnableDemonTranslator
+    enable_alcohol_license:      EnableSodaLicense
+    enable_soda_license:         EnableAlcoholLicense
+    enable_demon_translator:     EnableDemonTranslator
     enable_mapping_requirements: EnableMappingRequirement

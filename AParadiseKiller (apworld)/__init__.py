@@ -3,11 +3,11 @@ from typing import ClassVar, Dict, Mapping, Any
 from BaseClasses import Tutorial, ItemClassification as ItemClass, Item
 from worlds.AutoWorld import World, WebWorld
 
-from .Options import ParadiseKillerOptions
+from .Options import ParadiseKillerOptions, OptionGroup
 from .Groups import item_name_groups, location_name_groups
 
 from .Items import ParadiseKillerItem
-from . import Locations, Regions, Rules
+from . import Locations, Regions, Rules, Options
 
 
 class ParadiseKillerWeb(WebWorld):
@@ -20,6 +20,35 @@ class ParadiseKillerWeb(WebWorld):
         "setup/en",
         ["Caffeinated Moth"]
     )
+    option_groups = [
+        OptionGroup("Goal requirements", [
+            Options.Goal,
+            Options.NumberSodaCans,
+            Options.NumberWhiskyBottles,
+            Options.NumberRelationships,
+            Options.MaxLevelRelationships
+        ]),
+        OptionGroup("Deathlink", [
+            Options.DeathLink
+        ]),
+        OptionGroup("Gameplay", [
+            Options.EnableNebulaDrinks,
+            Options.EnableWhiskyBottles,
+            Options.EnableShinjiLocations,
+            Options.EnableStarlightSkins,
+            Options.EnableIslandMomentos,
+            Options.EnableMusicTracks,
+            Options.EnableShrines,
+            Options.EnableRecordings,
+            Options.EnableRelationships
+        ]),
+        OptionGroup("Sphere Inhibitors", [
+            Options.EnableSodaLicense,
+            Options.EnableAlcoholLicense,
+            Options.EnableDemonTranslator,
+            Options.EnableMappingRequirement
+        ]),
+    ]
 
 
 class ParadiseKillerWorld(World):
@@ -30,14 +59,12 @@ class ParadiseKillerWorld(World):
     options: ParadiseKillerOptions
 
     item_name_to_id: ClassVar[Dict[str, int]] = Items.get_item_dict()
-    item_id_to_name: ClassVar[Dict[int, str]] = {
-        item_id: name for name, item_id in item_name_to_id.items()
-    }
+    item_id_to_name: ClassVar[Dict[int, str]] = {item_id: name for name, item_id in item_name_to_id.items()}
+    # print(item_id_to_name)
     
     location_name_to_id: ClassVar[Dict[str, int]] = Locations.get_location_dict()
-    location_id_to_name: ClassVar[Dict[int, str]] = {
-        location_id: name for name, location_id in location_name_to_id.items()
-    }
+    location_id_to_name: ClassVar[Dict[int, str]] = {location_id: name for name, location_id in location_name_to_id.items()}
+    # print(location_id_to_name)
     
     item_name_groups = item_name_groups
     location_name_groups = location_name_groups
@@ -79,26 +106,3 @@ class ParadiseKillerWorld(World):
 
     def set_rules(self) -> None:
         Rules.set_rules(self.multiworld, self, self.player, self.options)
-
-
-
-    def dict_to_lua_table(d, indent=0):
-        spaces = " " * indent
-        lines = ["{"]
-
-        for key, value in d.items():
-            lua_key = f'["{key}"]' if isinstance(key, str) else f"[{key}]"
-
-            if isinstance(value, dict):
-                lua_value = dict_to_lua_table(value, indent + 4)
-            elif isinstance(value, str):
-                lua_value = f'"{value}"'
-            else:
-                lua_value = str(value)
-
-            lines.append(f"{spaces}    {lua_key} = {lua_value},")
-
-        lines.append(f"{spaces}}}")
-        return "\n".join(lines)
-
-

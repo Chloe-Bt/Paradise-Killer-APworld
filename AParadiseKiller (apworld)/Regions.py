@@ -11,7 +11,6 @@ def create_regions(world, options: ParadiseKillerOptions):
     regions: Dict[str, Region] = \
         {
             "Menu": Region("Menu", world.player, world.multiworld),
-            "Idle Lands": Region("Idle Lands", world.player, world.multiworld),
             "Agri Fields": Region("Agri Fields", world.player, world.multiworld),
             "Beach": Region("Beach", world.player, world.multiworld),
             "Citizen Apartments": Region("Citizen Apartments", world.player, world.multiworld),
@@ -24,6 +23,7 @@ def create_regions(world, options: ParadiseKillerOptions):
             "Desolation Cell": Region("Desolation Cell", world.player, world.multiworld),
             "Doom Jazz's Yacht": Region("Doom Jazz's Yacht", world.player, world.multiworld),
             "Gardens": Region("Gardens", world.player, world.multiworld),
+            "Idle Lands": Region("Idle Lands", world.player, world.multiworld),
             "K. HX's Workshop": Region("K. HX's Workshop", world.player, world.multiworld),
             "Marshal Barracks": Region("Marshal Barracks", world.player, world.multiworld),
             "Mountain Gorge": Region("Mountain Gorge", world.player, world.multiworld),
@@ -41,11 +41,6 @@ def create_regions(world, options: ParadiseKillerOptions):
         }
 
     connect(world.player, "menu-to-IL", regions["Menu"], regions["Idle Lands"])
-
-    # Idle Lands
-    key_item_name = UPGRADE_ID_TO_NAME[SU_GOAT]
-    connect(world.player, "IL-to-O", regions["Idle Lands"], regions["Overworld"],
-            lambda state, ki=key_item_name: state.has(ki, world.player))
 
     # Agri Fields
     key_item_name = KEY_ID_TO_NAME[KEY_AF]
@@ -154,6 +149,11 @@ def create_regions(world, options: ParadiseKillerOptions):
     else:
         connect(world.player, "O-to-G", regions["Overworld"], regions["Gardens"])
     connect(world.player, "G-to-O", regions["Gardens"], regions["Overworld"])
+
+    # Idle Lands
+    key_item_name = UPGRADE_ID_TO_NAME[SU_GOAT]
+    connect(world.player, "IL-to-O", regions["Idle Lands"], regions["Overworld"],
+            lambda state, ki=key_item_name: state.has(ki, world.player))
 
     # K. HX's Workshop
     key_item_name = KEY_ID_TO_NAME[KEY_KHX]

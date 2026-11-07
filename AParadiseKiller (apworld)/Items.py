@@ -1,4 +1,4 @@
-from BaseClasses import Item, ItemClassification as ItemClass
+from BaseClasses import Item, ItemClassification
 from . import ParadiseKillerOptions
 
 from .ItemLists.Keys import *
@@ -15,16 +15,16 @@ from .ItemLists.StarlightSkins import *
 from .ItemLists.KeyItems import *
 from .ItemLists.BloodCrystals import *
 from .ItemLists.RadioControlTowers import *
-
 from .ItemLists.Keys import *
 
-from ..AutoWorld import World
+from .Locations import *
 
+from ..AutoWorld import World
 
 class ParadiseKillerItem(Item):
     game = "Paradise Killer"
 
-    def __init__(self, name: str, classification: ItemClass, id: int, player):
+    def __init__(self, name: str, classification: ItemClassification, id: int, player):
         super().__init__(name, classification, id, player)
 
 
@@ -33,6 +33,16 @@ def get_item_dict():
 
 
 def populate_item_pool(world: World, options: ParadiseKillerOptions):
+    enabled_items  = get_enabled_items(options)
+    
+    location_count = len(get_enabled_locations(options))
+    item_count     = sum(item.copies for item in get_enabled_items(options))
+
+    #print(f"Number of locations: {location_count}")
+    #print(f"Number of items: {item_count}")
+
+    itempool = []
+
     for item_data in get_enabled_items(options):
         classification = (
             item_data.classification(options)
@@ -40,25 +50,45 @@ def populate_item_pool(world: World, options: ParadiseKillerOptions):
             else item_data.classification
         )
         for _ in range(item_data.copies):
-            item = ParadiseKillerItem(
-                item_data.name, classification, item_data.id, world.player
+            itempool.append(
+                ParadiseKillerItem(
+                    item_data.name, 
+                    classification, 
+                    item_data.id, 
+                    world.player
+                )
             )
-            world.multiworld.itempool.append(item)
             
-    print(f"Number of locations: {len(world.get_locations())}")
-    print(f"Number of items: {sum(item.copies for item in get_enabled_items(options))}")
+    excess = item_count - location_count
+    if excess > 0:
+        relic_names = {item.name for item in RELIC_ITEMS}
+        removable = [
+            index
+            for index, item in enumerate(itempool)
+            if (
+                item.name in relic_names
+                and item.classification == ItemClassification.filler
+            )
+        ]
+        world.random.shuffle(removable)
+        for index in reversed(removable[:excess]):
+            removed = itempool.pop(index)
+            #print(f"Removed filler Relic: {removed.name}")
+            
+    elif excess < 0:
+        filler = ParadiseKillerItem(
+            "Blood Crystal",
+            ItemClassification.filler, 
+            1000, 
+            world.player
+        )
+        for _ in range(-1*excess):
+            itempool.append(filler)
     
-    filler_needed = len(world.get_locations()) - sum(item.copies for item in get_enabled_items(options))
-    filler = ParadiseKillerItem(
-        "Blood Crystal", ItemClassification.filler, 1000, world.player
-    )
-    
-    for _ in range(filler_needed):
-        print("FILLER")
-        world.multiworld.itempool.append(filler)
+    world.multiworld.itempool.extend(itempool)
 
 
-def get_enabled_settings(options):
+def ItemClassification(options):
     return {name for name, value in vars(options).items() if value is True}
 
 

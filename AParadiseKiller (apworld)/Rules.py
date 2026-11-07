@@ -44,4 +44,5 @@ def has_required_relationships(state, world, player):
     for item in relationship_items:
         if state.count(item, player) >= required_level:
             count += 1
+            
     return count >= required_count

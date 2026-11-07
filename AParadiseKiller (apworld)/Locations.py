@@ -63,20 +63,18 @@ def create_locations(world: World, regions: Dict[str, Region], options: Paradise
                 loc,
                 lambda state, rule=loc_data.rule: rule(state, options, world.player)
             )
+        
         region.locations.append(loc)
 
 def get_enabled_settings(options):
-    return {
-        name
-        for name, value in vars(options).items()
-        if value is Truebb
-    }
+    return {name for name, value in vars(options).items() if value is True}
 
 def get_enabled_locations(options):
     result = []
     for loc in get_all_locations():
         if loc.enabled_if and not loc.enabled_if(options):
             continue
+        
         result.append(loc)
     return result
 
