@@ -6,8 +6,9 @@ local items_handling = 7
 local ap = nil
 local checked_locations = {}
 local lastIndex = -1
-
-
+local goal = nil
+local goal_requirement = 0
+local goal_counter = 0
 
 -- General AP stuff
 function connect(server, slot, password)
@@ -36,13 +37,18 @@ function connect(server, slot, password)
     function on_slot_connected(slot_data)
         LogToConsole("[AP] Slot connected")
         
+        goal = slot_data.goal
+        if goal == 0 then
+            goal_requirement = slot_data.number_nebula_drinks
+        elseif goal == 1 then
+            goal_requirement = slot_data.number_whisky_bottles
+        end
+
         ap:ConnectUpdate(nil, {"Lua-APClientPP"})
 
         ChangeDialogueName(ap:get_slot())
         RegisterDeathlink()
         BuildInventoryItemDataLookup()
-
-        -- ap:StatusUpdate(30)
     end
 
     function on_slot_refused(reasons)
@@ -59,9 +65,18 @@ function connect(server, slot, password)
         for _, item in ipairs(items) do
             if item.index > lastIndex then
                 lastIndex = item.index
+                
+                if goal == 0 and item.item >= 101 and item.item <= 123 then
+                    goal_counter = goal_counter + 1
+                elseif goal == 1 and item.item >= 201 and item.item <= 213 then
+                    goal_counter = goal_counter + 1
+                end
+
+                if goal_counter >= goal_requirement then
+                    ap:StatusUpdate(30)
+                end
 
                 local handler = ItemHandlers[item.item]
-
                 if handler then
                     handler(item, inventory, knowledge)
                 else
