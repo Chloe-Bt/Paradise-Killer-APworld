@@ -23,7 +23,7 @@ class LocationData:
     name: str
 
     # Optional metadata
-    region: str = "Citizen Apartments"
+    region: str = "Gardens"
 
     # YAML/settings requirements
     enabled_if: Callable | None = None

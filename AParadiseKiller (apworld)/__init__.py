@@ -87,6 +87,8 @@ class ParadiseKillerWorld(World):
     def fill_slot_data(self) -> Mapping[str, Any]:
         slot_data = {
             "goal":                         self.options.goal.value,
+            "number_nebula_drinks":         self.options.number_nebula_drinks.value,
+            "number_whisky_bottles":        self.options.number_whisky_bottles.value,
             "death_link":                   self.options.death_link.value,
             "enable_nebula_drinks":         self.options.enable_nebula_drinks.value,
             "enable_whisky_bottles":        self.options.enable_whisky_bottles.value,

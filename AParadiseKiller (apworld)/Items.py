@@ -1,4 +1,4 @@
-from BaseClasses import Item, ItemClassification
+from BaseClasses import Item, ItemClassification as ItemClass
 from . import ParadiseKillerOptions
 
 from .ItemLists.Keys import *
@@ -24,7 +24,7 @@ from ..AutoWorld import World
 class ParadiseKillerItem(Item):
     game = "Paradise Killer"
 
-    def __init__(self, name: str, classification: ItemClassification, id: int, player):
+    def __init__(self, name: str, classification: ItemClass, id: int, player):
         super().__init__(name, classification, id, player)
 
 
@@ -66,8 +66,7 @@ def populate_item_pool(world: World, options: ParadiseKillerOptions):
             index
             for index, item in enumerate(itempool)
             if (
-                item.name in relic_names
-                and item.classification == ItemClassification.filler
+                item.name in relic_names and item.classification == ItemClass.filler
             )
         ]
         world.random.shuffle(removable)
@@ -78,7 +77,7 @@ def populate_item_pool(world: World, options: ParadiseKillerOptions):
     elif excess < 0:
         filler = ParadiseKillerItem(
             "Blood Crystal",
-            ItemClassification.filler, 
+            ItemClass.filler, 
             1000, 
             world.player
         )
