@@ -111,7 +111,7 @@ function connect(server, slot, password)
     end
 
     function on_bounced(bounce)
-        LogToConsole("[AP] Bounced")
+        print("[AP] Bounced")
         if bounce.tags and table.concat(bounce.tags, " "):find("DeathLink") then
             LogToConsole("[AP] Deathlink Received")
 
@@ -288,13 +288,11 @@ end
 function registerNormalItem(id)
     ItemHandlers[id] = function(item, inventory, knowledge)
         local name = GAME_ITEM_ID_TO_NAME[id]
-
         if not name or name == "" then
             return
         end
 
         local itemData = GetInventoryItemData(name)
-
         if itemData then
             itemData:SetPropertyValue("MaximumNumberThatCanBeOwned", 2)
         else
@@ -310,13 +308,22 @@ end
 function registerCrestItem(id)
     ItemHandlers[id] = function(item, inventory, knowledge)
         local locations = GAME_ITEM_ID_TO_NAME[id]
-        if not locations then return end
+        if not locations or locations == "" then
+            return
+        end
 
         crestProgress[id] = crestProgress[id] or 0
         crestProgress[id] = crestProgress[id] + 1
         local loc = locations[crestProgress[id]]
 
         if loc then
+            local itemData = GetInventoryItemData(loc)
+            if itemData then
+                itemData:SetPropertyValue("MaximumNumberThatCanBeOwned", 2)
+            else
+                LogToConsole("[AP] Impossible item to change property (MaximumNumberThatCanBeOwned) for: " .. tostring(name))
+            end 
+
             if not inventory:DoesOwnItem(FName(loc)) then
                 inventory:GiveItem(FName(loc), 1)
             end
@@ -341,6 +348,7 @@ function BuildInventoryItemDataLookup()
     local objects = FindAllOf("InventoryItemData")
     objects = TableConcat(objects, FindAllOf("VendingMachineItemData"))
     objects = TableConcat(objects, FindAllOf("MusicTrackItemData"))
+    objects = TableConcat(objects, FindAllOf("LocationItemData"))
     
     local count = 0
     for _, obj in pairs(objects) do
