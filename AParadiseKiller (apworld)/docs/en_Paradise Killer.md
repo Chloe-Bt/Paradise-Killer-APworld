@@ -1,4 +1,5 @@
 # Paradise Killer Archipelago
+Please please please finish a normal playthrough of the game first. You will do yourself a disservice playing it randomized for the first time.
 
 ## What does randomization do to this Game?
 - Shuffles nebula drinks, whiskey bottles, relics, key items, Starlight (upgrades), LLD upgrades away from their original items.
