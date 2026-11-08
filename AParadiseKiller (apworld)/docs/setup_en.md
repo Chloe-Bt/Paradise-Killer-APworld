@@ -1,4 +1,6 @@
 # Paradise Killer randomizer setup guide
+Please please please finish a normal playthrough of the game first. You will do yourself a disservice playing it randomized for the first time.
+
 ## Required software
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases)
 - [Universal Tracker](https://github.com/FarisTheAncient/Archipelago/releases?q=Tracker)
