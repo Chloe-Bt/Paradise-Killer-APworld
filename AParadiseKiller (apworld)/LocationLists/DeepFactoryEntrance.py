@@ -152,7 +152,14 @@ DFE_LOCATIONS = [
     LocationData(
         id = DFE_SU_1,
         name = "Deep Factory Entrance: Starlight Upgrade (Worship)",
-        rule = lambda state, options, player: state.count_group_unique("Nebula Soda Drinks", player) >= 10,
+        enabled_if = lambda options: (
+            options.enable_nebula_drinks
+            or options.goal.value == options.goal.option_lady_soda_dies
+        ),
+        rule=lambda state, options, player: (
+            state.count_group_unique("Nebula Soda Drinks", player)
+            >= min(10, options.number_nebula_drinks.value)
+        ),
         tags = {"Starlight Upgrade"},
     ),
 ]
