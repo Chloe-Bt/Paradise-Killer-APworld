@@ -68,7 +68,14 @@ class ParadiseKillerWorld(World):
     
     item_name_groups = item_name_groups
     location_name_groups = location_name_groups
-
+    
+    def generate_early(self):
+        match self.options.goal.value:
+            case self.options.goal.option_lady_soda_dies:
+                self.options.enable_nebula_drinks.value = True
+            case self.options.goal.option_lady_whisky_dies:
+                self.options.enable_whisky_bottles.value = True
+    
     def create_regions(self) -> None:
         regions = Regions.create_regions(self, self.options)
         Locations.create_locations(self, regions, self.options)
