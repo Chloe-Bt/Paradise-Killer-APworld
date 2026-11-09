@@ -74,7 +74,7 @@ location_name_groups = {
     "Marshal Barracks":         set(MB_ID_TO_NAME.values()),
     "Mountain Gorge":           set(MG_ID_TO_NAME.values()),
     "Opulent Ziggurat":         set(OZ_ID_TO_NAME.values()),
-    "Overworld":                set(O_ID_TO_NAME.values()),
+    #"Overworld":                set(O_ID_TO_NAME.values()),
     "Paradise Gates":           set(PG_ID_TO_NAME.values()),
     "Pyramid":                  set(P_ID_TO_NAME.values()),
     "Reality Folding Drive":    set(RFD_ID_TO_NAME.values()),
