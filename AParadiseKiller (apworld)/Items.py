@@ -12,8 +12,8 @@ from .ItemLists.IslandMomentos import *
 from .ItemLists.Carvings import *
 from .ItemLists.Recordings import *
 from .ItemLists.StarlightSkins import *
-from .ItemLists.KeyItems import *
 from .ItemLists.BloodCrystals import *
+from .ItemLists.KeyItems import *
 from .ItemLists.RadioControlTowers import *
 from .ItemLists.Keys import *
 
@@ -38,17 +38,41 @@ def populate_item_pool(world: World, options: ParadiseKillerOptions):
     location_count = len(get_enabled_locations(options))
     item_count     = sum(item.copies for item in get_enabled_items(options))
 
-    #print(f"Number of locations: {location_count}")
-    #print(f"Number of items: {item_count}")
+    soda_item_ids = {item.id for item in SODA_ITEMS}
+    whisky_item_ids = {item.id for item in WHISKY_ITEMS}
+
+    soda_ids = set()
+    whisky_ids = set()
+    if options.goal.value == options.goal.option_lady_soda_dies:
+        soda_ids = get_required_soda_ids(world, options, enabled_items)
+    elif options.goal.value == options.goal.option_lady_whisky_dies:
+        whisky_ids = get_required_whisky_ids(world, options, enabled_items)
 
     itempool = []
 
-    for item_data in get_enabled_items(options):
-        classification = (
-            item_data.classification(options)
-            if callable(item_data.classification)
-            else item_data.classification
-        )
+    for item_data in enabled_items:
+        if options.goal.value == options.goal.option_lady_soda_dies and item_data.id in soda_item_ids:
+            classification = (
+                ItemClass.progression
+                if item_data.id in soda_ids
+                else ItemClass.useful
+            )
+
+        elif options.goal.value == options.goal.option_lady_whisky_dies and item_data.id in whisky_item_ids:
+            classification = (
+                ItemClass.progression
+                if item_data.id in whisky_ids
+                else ItemClass.useful
+            )
+
+        else:
+            classification = (
+                item_data.classification(options)
+                if callable(item_data.classification)
+                else item_data.classification
+            )
+
+
         for _ in range(item_data.copies):
             itempool.append(
                 ParadiseKillerItem(
@@ -60,30 +84,32 @@ def populate_item_pool(world: World, options: ParadiseKillerOptions):
             )
             
     excess = item_count - location_count
+
     if excess > 0:
         relic_names = {item.name for item in RELIC_ITEMS}
+        
         removable = [
-            index
-            for index, item in enumerate(itempool)
+            item for item in itempool
             if (
                 item.name in relic_names and item.classification == ItemClass.filler
             )
         ]
         world.random.shuffle(removable)
-        for index in reversed(removable[:excess]):
-            removed = itempool.pop(index)
-            #print(f"Removed filler Relic: {removed.name}")
+        
+        for item in removable[:excess]:
+            itempool.remove(item)
+            print(f"Removed filler Relic: {item.name}")
             
     elif excess < 0:
-        filler = ParadiseKillerItem(
-            "Blood Crystal",
-            ItemClass.filler, 
-            1000, 
-            world.player
-        )
         for _ in range(-1*excess):
-            itempool.append(filler)
-    
+            itempool.append(ParadiseKillerItem(
+                "Blood Crystal",
+                ItemClass.filler, 
+                1000, 
+                world.player
+            )
+        )
+        
     world.multiworld.itempool.extend(itempool)
 
 
@@ -112,8 +138,25 @@ def get_all_items():
         + RECORDING_ITEMS
         + STARLIGHTS_ITEMS
         + KI_ITEMS
-        + RELIC_ITEMS
         + BC_ITEMS
+        + RELIC_ITEMS
         + RADIO_ITEMS
     )
     return ALL_ITEMS
+
+
+def get_required_soda_ids(world: World, options: ParadiseKillerOptions, enabled_items):
+    soda_progression_ids = set()
+    soda_ids = {item.id for item in SODA_ITEMS}
+    required_soda = options.number_nebula_drinks.value
+    soda_candidates = [item for item in enabled_items if item.id in soda_ids]
+    soda_progression_ids = {item.id for item in world.random.sample(soda_candidates, required_soda)}
+    return soda_progression_ids
+
+def get_required_whisky_ids(world: World, options: ParadiseKillerOptions, enabled_items):
+    whisky_progression_ids = set()
+    whisky_ids = {item.id for item in WHISKY_ITEMS}
+    required_whisky = options.number_whisky_bottles.value
+    whisky_candidates = [item for item in enabled_items if item.id in whisky_ids]
+    whisky_progression_ids = {item.id for item in world.random.sample(whisky_candidates, required_whisky)}
+    return whisky_progression_ids
