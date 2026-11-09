@@ -64,7 +64,7 @@ location_name_groups = {
     "Citizen Apartments":       set(CA_ID_TO_NAME.values()),
     "Citizen Housing":          set(CH_ID_TO_NAME.values()),
     "Council Building":         set(CB_ID_TO_NAME.values()),
-    "Court House":              set(CH_ID_TO_NAME.values()),
+    "Court House":              set(CHC_ID_TO_NAME.values()),
     "Danchi":                   set(D_ID_TO_NAME.values()),
     "Deep Factory Entrance":    set(DFE_ID_TO_NAME.values()),
     "Desolation Cell":          set(DC_ID_TO_NAME.values()),
