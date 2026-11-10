@@ -41,7 +41,7 @@ from .LocationLists.SyndicateHQ import *
 from .LocationLists.Tunnel import *
 
 item_name_groups = {
-    "Upgrades":                 set(WHISKY_ID_TO_NAME.values()),
+    "Upgrades":                 set(UPGRADE_ID_TO_NAME.values()),
     "Sphere Keys":              set(KEY_ID_TO_NAME.values()),
     "Blood Crystals":           set(BC_ID_TO_NAME.values()),
     "Nebula Soda Drinks":       set(SODA_ID_TO_NAME.values()),
