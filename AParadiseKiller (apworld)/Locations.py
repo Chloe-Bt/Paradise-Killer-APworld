@@ -70,13 +70,10 @@ def get_enabled_settings(options):
     return {name for name, value in vars(options).items() if value is True}
 
 def get_enabled_locations(options):
-    result = []
-    for loc in get_all_locations():
-        if loc.enabled_if and not loc.enabled_if(options):
-            continue
-        
-        result.append(loc)
-    return result
+    return [
+        loc for loc in get_all_locations()
+        if loc.enabled_if is None or loc.enabled_if(options)
+    ]
 
 def get_all_locations():
     ALL_LOCATIONS = (
