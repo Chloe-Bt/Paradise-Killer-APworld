@@ -43,10 +43,12 @@ def populate_item_pool(world: World, options: ParadiseKillerOptions):
 
     soda_ids = set()
     whisky_ids = set()
-    if options.goal.value == options.goal.option_lady_soda_dies:
-        soda_ids = get_required_soda_ids(world, options, enabled_items)
-    elif options.goal.value == options.goal.option_lady_whisky_dies:
-        whisky_ids = get_required_whisky_ids(world, options, enabled_items)
+    match options.goal.value:
+        case options.goal.option_lady_soda_dies:
+            soda_ids = get_required_soda_ids(world, options, enabled_items)
+        case options.goal.option_lady_whisky_dies:
+            whisky_ids = get_required_whisky_ids(world, options, enabled_items)
+
 
     itempool = []
 
@@ -118,12 +120,10 @@ def ItemClassification(options):
 
 
 def get_enabled_items(options):
-    result = []
-    for item in get_all_items():
-        if item.enabled_if and not item.enabled_if(options):
-            continue
-        result.append(item)
-    return result
+    return [
+        item for item in get_all_items()
+        if item.enabled_if is None or item.enabled_if(options)
+    ]
 
 
 def get_all_items():
